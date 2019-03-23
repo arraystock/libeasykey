@@ -2,6 +2,7 @@
 // Copyright (c) 2019 Jonathan Archer
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <unistd.h>
@@ -13,7 +14,7 @@ This function reads in the value of a given key. It calls findKey() first to get
 the key's position (and make sure it exists), then trims off a newline if it
 exists (which should always be the case AFAIK).
 */
-const char *readKey(const char *Filename, const char *Key) {
+void readKey(const char *Filename, const char *Key, char *Value) {
   long int Pos = findKey(Filename, Key);
 
   // If the key exists, then we continue.
@@ -29,20 +30,17 @@ const char *readKey(const char *Filename, const char *Key) {
     fseek(File, Pos, SEEK_SET);
 
     // Read in the line.
-    char *Line;
     size_t Len = 0;
-    getline(&Line, &Len, File);
+    getline(&Value, &Len, File);
 
     // Move past key name.
-    Line += strlen(Key) + 3;
+    strcpy(Value, Value + strlen(Key) + 3);
 
     // Strip newLine.
-    if (Line[strlen(Line) - 1] == '\n')
-      Line[strlen(Line) - 1] = 0;
+    if (Value[strlen(Value) - 1] == '\n')
+      Value[strlen(Value) - 1] = 0;
 
     fclose(File);
-    return Line;
+    // return Line;
   }
-  // Return an empty string if the key does not exist.
-  return "";
 }

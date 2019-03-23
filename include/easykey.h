@@ -16,7 +16,7 @@ bool lineHasKey(const char *Line, const char *Key);
 
 long int findKey(const char *Filename, const char *Key);
 
-const char *readKey(const char *Filename, const char *Key);
+void readKey(const char *Filename, const char *Key, char *Value);
 
 #ifdef __cplusplus
 }

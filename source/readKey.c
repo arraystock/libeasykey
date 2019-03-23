@@ -30,17 +30,17 @@ void readKey(const char *Filename, const char *Key, char *Value) {
     fseek(File, Pos, SEEK_SET);
 
     // Read in the line.
-    size_t Len = 0;
+    size_t Len = sizeof(Value);
     getline(&Value, &Len, File);
+    fclose(File);
 
     // Move past key name.
-    strcpy(Value, Value + strlen(Key) + 3);
-
-    // Strip newLine.
+    memmove(Value, Value + strlen(Key) + 3, strlen(Value));
+    // Strip trailing newline.
     if (Value[strlen(Value) - 1] == '\n')
       Value[strlen(Value) - 1] = 0;
-
-    fclose(File);
-    // return Line;
+    // Strip trailing whitespace.
+    while (Value[strlen(Value) - 1] == ' ')
+      Value[strlen(Value) - 1] = '\0';
   }
 }

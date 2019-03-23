@@ -2,6 +2,7 @@
 // Copyright (c) 2019 Jonathan Archer
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <unistd.h>
@@ -23,7 +24,7 @@ long int findKey(const char *Filename, const char *Key) {
   else
     File = fopen(Filename, "w+");
 
-  char *Line;
+  char *Line = (char *)malloc(255 * sizeof(char));
   size_t Len = 0;
 
   // Read in every line until we find the key.
@@ -35,6 +36,7 @@ long int findKey(const char *Filename, const char *Key) {
       Pos = ftell(File);
       break;
     }
+  free(Line);
   fclose(File);
   return Pos;
 }

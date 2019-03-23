@@ -1,7 +1,7 @@
 # Makefile
 # Copyright (c) 2019 Jonathan Archer
 
-TARGET := example
+TARGET := example.out
 
 SRCS := main.c
 OBJS := $(filter %.o, $(patsubst %.c, %.o, $(SRCS)))

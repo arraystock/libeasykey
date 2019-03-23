@@ -29,8 +29,7 @@ long int findKey(const char *Filename, const char *Key) {
 
   // Read in every line until we find the key.
   while (getline(&Line, &Len, File) != -1)
-    if ((strncmp(Key, Line, strlen(Key)) == 0) &&
-        (strncmp(&Line[strlen(Key)], " = ", 3) == 0)) {
+    if (lineHasKey(Line, Key)) {
       // Set the position.
       fseek(File, -strlen(Line), SEEK_CUR);
       Pos = ftell(File);

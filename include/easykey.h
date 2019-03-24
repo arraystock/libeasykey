@@ -23,8 +23,8 @@ bool lineHasKey(const char *Line, const char *Key);
 
 long int findKey(const char *Filename, const char *Key);
 
-void readKey(const char *Filename, ek_key *Key);
-void writeKey(const char *Filename, ek_key Key);
+void readKey(const char *Filename, ek_key Key);
+void writeKey(const char *Filename, const ek_key Key);
 
 #ifdef __cplusplus
 }

@@ -11,19 +11,19 @@ int main() {
   MyKey.Name = "FRUITS";
   MyKey.Data = (char *)malloc(255 * sizeof(char));
 
-  readKey("../example.kf", &MyKey);
+  readKey("../example.kf", MyKey);
   printf("Key '%s' contains: %s\n", MyKey.Name, MyKey.Data);
 
   strcpy(MyKey.Data, "Pears Oranges");
   writeKey("../example.kf", MyKey);
 
-  readKey("../example.kf", &MyKey);
+  readKey("../example.kf", MyKey);
   printf("Key '%s' contains: %s\n", MyKey.Name, MyKey.Data);
 
   strcpy(MyKey.Data, "Grapes");
   writeKey("../example.kf", MyKey);
 
-  readKey("../example.kf", &MyKey);
+  readKey("../example.kf", MyKey);
   printf("Key '%s' contains: %s\n", MyKey.Name, MyKey.Data);
 
   free(MyKey.Data);

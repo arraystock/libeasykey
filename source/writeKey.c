@@ -15,7 +15,7 @@ exists, and if the new key is smaller or the same size as the old one, it will
 overwrite it. Otherwise it will clear the existing key and create the key again
 at the end of the file with the new value.
 */
-void writeKey(const char *Filename, ek_key Key) {
+void writeKey(const char *Filename, const ek_key Key) {
   long int Pos = findKey(Filename, Key.Name);
 
   // Open the file.

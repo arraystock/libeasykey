@@ -9,7 +9,7 @@ int main() {
   ek_key MyKey;
   MyKey.Name = "NAME";
   MyKey.Data = (char *)malloc(255 * sizeof(char));
-  readKey("../example.kf", &MyKey);
+  readKey("../example.kf", MyKey);
   printf("Key '%s' contains: %s\n", MyKey.Name, MyKey.Data);
   return 0;
 }

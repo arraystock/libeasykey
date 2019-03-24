@@ -14,8 +14,8 @@ This function reads in the value of a given key. It calls findKey() first to get
 the key's position (and make sure it exists), then trims off a newline if it
 exists (which should always be the case AFAIK).
 */
-void readKey(const char *Filename, ek_key *Key) {
-  long int Pos = findKey(Filename, Key->Name);
+void readKey(const char *Filename, ek_key Key) {
+  long int Pos = findKey(Filename, Key.Name);
 
   // If the key exists, then we continue.
   if (Pos >= 0) {
@@ -30,17 +30,17 @@ void readKey(const char *Filename, ek_key *Key) {
     fseek(File, Pos, SEEK_SET);
 
     // Read in the line.
-    size_t Len = sizeof(Key->Data);
-    getline(&Key->Data, &Len, File);
+    size_t Len = sizeof(Key.Data);
+    getline(&Key.Data, &Len, File);
     fclose(File);
 
     // Move past key name.
-    memmove(Key->Data, Key->Data + strlen(Key->Name) + 3, strlen(Key->Data));
+    memmove(Key.Data, Key.Data + strlen(Key.Name) + 3, strlen(Key.Data));
     // Strip trailing newline.
-    if (Key->Data[strlen(Key->Data) - 1] == '\n')
-      Key->Data[strlen(Key->Data) - 1] = 0;
+    if (Key.Data[strlen(Key.Data) - 1] == '\n')
+      Key.Data[strlen(Key.Data) - 1] = 0;
     // Strip trailing whitespace.
-    while (Key->Data[strlen(Key->Data) - 1] == ' ')
-      Key->Data[strlen(Key->Data) - 1] = '\0';
+    while (Key.Data[strlen(Key.Data) - 1] == ' ')
+      Key.Data[strlen(Key.Data) - 1] = '\0';
   }
 }

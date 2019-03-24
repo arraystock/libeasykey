@@ -1,7 +1,6 @@
 // readKey.c
 // Copyright (c) 2019 Jonathan Archer
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 

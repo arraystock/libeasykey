@@ -1,7 +1,6 @@
 // findKey.c
 // Copyright (c) 2019 Jonathan Archer
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -15,8 +14,8 @@ if it exists. An example call would be findKey(myFile, "MY_KEY"), and the
 function will scan for a line starting with "MY_KEY = ". If the key does not
 exist, then the function returns EK_KEY_NO_EXIST (-1).
 */
-long int findKey(const char *Filename, const char *Key) {
-  long int Pos = EK_KEY_NO_EXIST;
+long findKey(const char *Filename, const char *Key) {
+  long Pos = EK_KEY_NO_EXIST;
   FILE *File;
 
   if (access(Filename, F_OK) != -1)

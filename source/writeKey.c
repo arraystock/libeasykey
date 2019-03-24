@@ -1,13 +1,14 @@
 // writeKey.c
 // Copyright (c) 2019 Jonathan Archer
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <unistd.h>
 
 #include "easykey.h"
+
+extern long fsize(FILE *File);
 
 /*
 This function writes a value to a key. First it checks if the key already
@@ -34,25 +35,24 @@ void writeKey(const char *Filename, const ek_key Key) {
     size_t Len = 0;
     getline(&Line, &Len, File);
 
-    // If the new key value is larger than the old, we clear out the old one and
+    // If the new key value is larger than the old, we overwrite the old one and
     // write the new key + value to the end of the file. Otherwise, we just
     // overwrite the old key.
-
-    // TODO: If the new key is bigger than the old one, then read everything
-    // after the key into memory, write the key, and rewrite the rest of the
-    // file after the key to avoid whitespace buildup.
     if (strlen(Line) < strlen(Key.Name) + strlen(Key.Data) + 3) {
-      // printf("Bigger!\n");
-      // Re-set our position, as getline() has changed it.
+      // Get the size for how large our buffer should be.
+      long BufferSize = fsize(File) + strlen(Line) - Pos;
+
+      // Read in the rest of the file.
+      char *Buffer = malloc(BufferSize);
+      fread(Buffer, BufferSize, 1, File);
+
+      // Re-set our position.
       fseek(File, Pos, SEEK_SET);
-      // Set the line to all whitespace with a newline at the end before writing
-      // it back to the file.
-      memset(Line, ' ', strlen(Line));
-      Line[strlen(Line) - 1] = '\n';
-      fputs(Line, File);
+
+      // Overwrite.
+      fputs(Buffer, File);
 
       // Create the key.
-      fseek(File, 0, SEEK_END);
       fprintf(File, "\n%s = %s", Key.Name, Key.Data);
     } else {
       // Set our position and overwrite the existing value.

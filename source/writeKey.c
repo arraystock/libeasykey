@@ -15,8 +15,8 @@ exists, and if the new key is smaller or the same size as the old one, it will
 overwrite it. Otherwise it will clear the existing key and create the key again
 at the end of the file with the new value.
 */
-void writeKey(const char *Filename, const char *Key, const char *Value) {
-  long int Pos = findKey(Filename, Key);
+void writeKey(const char *Filename, ek_key Key) {
+  long int Pos = findKey(Filename, Key.Name);
 
   // Open the file.
   FILE *File;
@@ -41,7 +41,7 @@ void writeKey(const char *Filename, const char *Key, const char *Value) {
     // TODO: If the new key is bigger than the old one, then read everything
     // after the key into memory, write the key, and rewrite the rest of the
     // file after the key to avoid whitespace buildup.
-    if (strlen(Line) < strlen(Key) + strlen(Value) + 3) {
+    if (strlen(Line) < strlen(Key.Name) + strlen(Key.Data) + 3) {
       // printf("Bigger!\n");
       // Re-set our position, as getline() has changed it.
       fseek(File, Pos, SEEK_SET);
@@ -53,14 +53,14 @@ void writeKey(const char *Filename, const char *Key, const char *Value) {
 
       // Create the key.
       fseek(File, 0, SEEK_END);
-      fprintf(File, "\n%s = %s", Key, Value);
+      fprintf(File, "\n%s = %s", Key.Name, Key.Data);
     } else {
       // Set our position and overwrite the existing value.
-      fseek(File, Pos + strlen(Key) + 3, SEEK_SET);
-      fputs(Value, File);
+      fseek(File, Pos + strlen(Key.Name) + 3, SEEK_SET);
+      fputs(Key.Data, File);
       // Fill the rest of the line with blank characters.
-      for (int i = 0; i + strlen(Key) + strlen(Value) + 3 < strlen(Line) - 1;
-           i++)
+      for (int i = 0;
+           i + strlen(Key.Name) + strlen(Key.Data) + 3 < strlen(Line) - 1; i++)
         fputc(' ', File);
       // Add newline.
       fputc('\n', File);
@@ -69,7 +69,7 @@ void writeKey(const char *Filename, const char *Key, const char *Value) {
   } else {
     // Create the key.
     fseek(File, 0, SEEK_END);
-    fprintf(File, "\n%s = %s", Key, Value);
+    fprintf(File, "\n%s = %s", Key.Name, Key.Data);
   }
   fclose(File);
   return;

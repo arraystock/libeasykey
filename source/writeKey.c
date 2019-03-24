@@ -8,13 +8,11 @@
 
 #include "easykey.h"
 
-extern long fsize(FILE *File);
-
 /*
 This function writes a value to a key. First it checks if the key already
 exists, and if the new key is smaller or the same size as the old one, it will
-overwrite it. Otherwise it will clear the existing key and create the key again
-at the end of the file with the new value.
+overwrite it. Otherwise it will overwrite the existing key and recreate it at
+the end of the file.
 */
 void writeKey(const char *Filename, const ek_key Key) {
   long int Pos = findKey(Filename, Key.Name);
@@ -37,7 +35,9 @@ void writeKey(const char *Filename, const ek_key Key) {
 
     // If the new key value is larger than the old, we overwrite the old one and
     // write the new key + value to the end of the file. Otherwise, we just
-    // overwrite the old key.
+    // overwrite the old key (and pad the difference with whitespace).
+
+    // If the new key value is larger...else if it is smaller.
     if (strlen(Line) < strlen(Key.Name) + strlen(Key.Data) + 3) {
       // Get the size for how large our buffer should be.
       long BufferSize = fsize(File) + strlen(Line) - Pos;
@@ -58,19 +58,20 @@ void writeKey(const char *Filename, const ek_key Key) {
       // Set our position and overwrite the existing value.
       fseek(File, Pos + strlen(Key.Name) + 3, SEEK_SET);
       fputs(Key.Data, File);
+
       // Fill the rest of the line with blank characters.
       for (int i = 0;
            i + strlen(Key.Name) + strlen(Key.Data) + 3 < strlen(Line) - 1; i++)
         fputc(' ', File);
+
       // Add newline.
       fputc('\n', File);
     }
     free(Line);
   } else {
-    // Create the key.
+    // Create the key at the end of the file since it does not exist.
     fseek(File, 0, SEEK_END);
     fprintf(File, "\n%s = %s", Key.Name, Key.Data);
   }
   fclose(File);
-  return;
 }

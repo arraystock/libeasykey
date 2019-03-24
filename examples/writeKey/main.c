@@ -4,18 +4,28 @@
 #include <easykey.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main() {
-  char *Val = (char *)malloc(255 * sizeof(char));
-  readKey("../example.kf", "FRUITS", Val);
-  printf("Key 'FRUITS' contains: %s\n", Val);
-  // printf("Using writeKey() to update the key 'FRUITS'...\n");
-  writeKey("../example.kf", "FRUITS", "Pears Oranges");
-  readKey("../example.kf", "FRUITS", Val);
-  printf("Key 'FRUITS' contains: %s\n", Val);
-  // printf("Using writeKey() to update the key 'FRUITS'...\n");
-  writeKey("../example.kf", "FRUITS", "Grapes");
-  readKey("../example.kf", "FRUITS", Val);
-  printf("Key 'FRUITS' contains: %s\n", Val);
+  ek_key MyKey;
+  MyKey.Name = "FRUITS";
+  MyKey.Data = (char *)malloc(255 * sizeof(char));
+
+  readKey("../example.kf", &MyKey);
+  printf("Key '%s' contains: %s\n", MyKey.Name, MyKey.Data);
+
+  strcpy(MyKey.Data, "Pears Oranges");
+  writeKey("../example.kf", MyKey);
+
+  readKey("../example.kf", &MyKey);
+  printf("Key '%s' contains: %s\n", MyKey.Name, MyKey.Data);
+
+  strcpy(MyKey.Data, "Grapes");
+  writeKey("../example.kf", MyKey);
+
+  readKey("../example.kf", &MyKey);
+  printf("Key '%s' contains: %s\n", MyKey.Name, MyKey.Data);
+
+  free(MyKey.Data);
   return 0;
 }

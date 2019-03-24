@@ -6,8 +6,10 @@
 #include <stdlib.h>
 
 int main() {
-  char *Val = (char *)malloc(255 * sizeof(char));
-  readKey("../example.kf", "NAME", Val);
-  printf("Key 'NAME' contains: %s\n", Val);
+  ek_key MyKey;
+  MyKey.Name = "NAME";
+  MyKey.Data = (char *)malloc(255 * sizeof(char));
+  readKey("../example.kf", &MyKey);
+  printf("Key '%s' contains: %s\n", MyKey.Name, MyKey.Data);
   return 0;
 }

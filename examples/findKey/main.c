@@ -5,6 +5,6 @@
 #include <stdio.h>
 
 int main() {
-  printf("Key 'EXAMPLE_KEY' fpos: %ld\n", findKey("../example.kf", "EXAMPLE_KEY"));
+  printf("Key 'EXAMPLE_KEY' fpos: %ld\n", findKey("../example.ini", "EXAMPLE_KEY"));
   return 0;
 }

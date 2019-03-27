@@ -33,40 +33,36 @@ void writeKey(const char *Filename, const ek_key Key) {
     size_t Len = 0;
     getline(&Line, &Len, File);
 
-    // If the new key value is larger than the old, we overwrite the old one and
-    // write the new key + value to the end of the file. Otherwise, we just
-    // overwrite the old key (and pad the difference with whitespace).
+    // First, we read in the rest of the file after the key about to be written.
+    // Then we overwrite the old key and write the new key + value to the same
+    // location. Thirdly, we write back the old data after the new key. And
+    // lastly, we pad the remainder of the file with whitespace.
 
-    // If the new key value is larger...else if it is smaller.
-    if (strlen(Line) < strlen(Key.Name) + strlen(Key.Data) + 3) {
-      // Get the size for how large our buffer should be.
-      long BufferSize = fsize(File) + strlen(Line) - Pos;
+    // TODO: After doing what's described above, rename the file to
+    // 'Filename.tmp', and use it to rebuild 'Filename' without the trailing
+    // whitespace.
 
-      // Read in the rest of the file.
-      char *Buffer = malloc(BufferSize);
-      fread(Buffer, BufferSize, 1, File);
+    // Get the size for how large our buffer should be.
+    long BufferSize = fsize(File) + strlen(Line) - Pos;
 
-      // Re-set our position.
-      fseek(File, Pos, SEEK_SET);
+    // Read in the rest of the file.
+    char *Buffer = malloc(BufferSize);
+    fread(Buffer, BufferSize, 1, File);
 
-      // Overwrite.
-      fputs(Buffer, File);
+    // Re-set our position.
+    fseek(File, Pos, SEEK_SET);
 
-      // Create the key.
-      fprintf(File, "\n%s = %s", Key.Name, Key.Data);
-    } else {
-      // Set our position and overwrite the existing value.
-      fseek(File, Pos + strlen(Key.Name) + 3, SEEK_SET);
-      fputs(Key.Data, File);
+    // Create the key.
+    fprintf(File, "%s = %s\n", Key.Name, Key.Data);
 
-      // Fill the rest of the line with blank characters.
-      for (int i = 0;
-           i + strlen(Key.Name) + strlen(Key.Data) + 3 < strlen(Line) - 1; i++)
-        fputc(' ', File);
+    // Overwrite the remaining data.
+    fputs(Buffer, File);
 
-      // Add newline.
-      fputc('\n', File);
-    }
+    // Fill the rest of the file with whitespace.
+    while (ftell(File) < fsize(File))
+      fputc(' ', File);
+
+    free(Buffer);
     free(Line);
   } else {
     // Create the key at the end of the file since it does not exist.

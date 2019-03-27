@@ -1,7 +1,7 @@
-ONE = 1
-ANOTHER = 2
-EXAMPLE_KEY = fpos should be 20.
-NAME = Jonathan
-ANIMALS = Pigs Cows
-PROJECTS = corridor libeasykey
-FRUITS = Grapes      
+FRUITS=Grapes
+ONE=1
+ANOTHER=2
+EXAMPLE_KEY=fpos should be 20.
+NAME=Jonathan
+ANIMALS=Pigs Cows
+PROJECTS=corridor libeasykey

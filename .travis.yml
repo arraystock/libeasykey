@@ -1,4 +1,4 @@
 language: c
-sudo: false # only for faster builds
+sudo: false # Allows for faster builds.
 script:
   - make

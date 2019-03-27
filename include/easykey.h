@@ -20,9 +20,9 @@ typedef struct ek_key {
   char *Data;
 } ek_key;
 
-bool lineHasKey(const char *Line, const char *Key);
+bool lineHasKey(const char *Line, const char *KeyName);
 
-long findKey(const char *Filename, const char *Key);
+long findKey(const char *Filename, const char *KeyName);
 
 void readKey(const char *Filename, ek_key Key);
 void writeKey(const char *Filename, const ek_key Key);

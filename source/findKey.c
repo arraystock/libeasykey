@@ -14,7 +14,7 @@ if it exists. An example call would be findKey(myFile, "MY_KEY"), and the
 function will scan for a line starting with "MY_KEY = ". If the key does not
 exist, then the function returns EK_KEY_NO_EXIST (-1).
 */
-long findKey(const char *Filename, const char *Key) {
+long findKey(const char *Filename, const char *KeyName) {
   long Pos = EK_KEY_NO_EXIST;
   FILE *File;
 
@@ -28,7 +28,7 @@ long findKey(const char *Filename, const char *Key) {
 
   // Read in every line until we find the key.
   while (getline(&Line, &Len, File) != -1)
-    if (lineHasKey(Line, Key)) {
+    if (lineHasKey(Line, KeyName)) {
       // Set the position.
       fseek(File, -strlen(Line), SEEK_CUR);
       Pos = ftell(File);

@@ -7,9 +7,15 @@
 
 /*
 This function reads the beginning of a line and checks if it starts with the key
-name and if the key name is followed by " = ".
+name and if the key name has a proper assignment.
 */
-bool lineHasKey(const char *Line, const char *Key) {
-  return (strncmp(Key, Line, strlen(Key)) == 0) &&
-         (strncmp(&Line[strlen(Key)], " = ", 3) == 0);
+bool lineHasKey(const char *Line, const char *KeyName) {
+  if (strncmp(KeyName, Line, strlen(KeyName)) == 0) {
+    // Probably safe to assume it's a proper key if it has the key name and
+    // either a '=' or ':'.
+    // TODO: Do some sort of strnstr to check just the bounds of the assignment.
+    return (strstr(&Line[strlen(KeyName)], "=") == NULL ||
+            strstr(&Line[strlen(KeyName)], ":") == NULL);
+  }
+  return false;
 }

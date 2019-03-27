@@ -53,7 +53,7 @@ void writeKey(const char *Filename, const ek_key Key) {
     fseek(File, Pos, SEEK_SET);
 
     // Create the key.
-    fprintf(File, "%s = %s\n", Key.Name, Key.Data);
+    fprintf(File, "%s=%s\n", Key.Name, Key.Data);
 
     // Overwrite the remaining data.
     fputs(Buffer, File);

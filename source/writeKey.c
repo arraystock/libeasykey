@@ -10,9 +10,8 @@
 
 /*
 This function writes a value to a key. First it checks if the key already
-exists, and if the new key is smaller or the same size as the old one, it will
-overwrite it. Otherwise it will overwrite the existing key and recreate it at
-the end of the file.
+exists, and if the key does, the function will overwrite it. Otherwise, the
+function will create the key at the end of the file.
 */
 void writeKey(const char *Filename, const ek_key Key) {
   long int Pos = findKey(Filename, Key.Name);
@@ -38,7 +37,7 @@ void writeKey(const char *Filename, const ek_key Key) {
     // First, we read in the rest of the file after the key about to be written.
     // Then we overwrite the old key and write the new key + value to the same
     // location. Thirdly, we write back the old data after the new key. And
-    // lastly, we pad the remainder of the file with whitespace.
+    // lastly, we truncate the file to remove possible garbage.
 
     // Get the size for how large our buffer should be.
     long BufferSize = fsize(File) + LineLen - Pos;

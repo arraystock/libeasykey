@@ -30,8 +30,7 @@ long findKey(const char *Filename, const char *KeyName) {
   while (getline(&Line, &Len, File) != -1)
     if (lineHasKey(Line, KeyName)) {
       // Set the position.
-      fseek(File, -strlen(Line), SEEK_CUR);
-      Pos = ftell(File);
+      Pos = ftell(File) - strlen(Line);
       break;
     }
   free(Line);

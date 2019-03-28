@@ -12,8 +12,9 @@ after_success:
   - export COMMIT_MESSAGE="$(git log --pretty=format:"%an - %s" -1)"
   - cd ..
   - git clone https://${GH_TOKEN}@github.com/arraystock/builds.git
-  - mv ./libeasykey/*.zip ./builds/
+  - mkdir builds/libeasykey/
+  - mv ./libeasykey/*.zip ./builds/libeasykey/
   - cd ./builds
   - git add .
   - git commit -m "libeasykey ($TRAVIS_OS_NAME) | Commit $COMMIT_TAG"
-  - git push --quiet --set-upstream origin-build master
+  - git push --quiet --set-upstream origin master

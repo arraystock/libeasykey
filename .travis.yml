@@ -3,6 +3,7 @@ sudo: false # Allows for faster builds.
 os:
   - linux
   - osx
+  - windows
 script:
   - make package PACKAGE=libeasykey-$TRAVIS_OS_NAME.zip
 after_success:

@@ -6,11 +6,12 @@ setup_git() {
 }
 
 commit_website_files() {
-  git checkout --orphan travis-build-$COMMIT_TAG
+  git branch -D master
+  git checkout --orphan master
   mkdir libeasykey
   mv *.zip libeasykey/
   git add libeasykey/*
-  git commit --message "libeasykey | Commit $COMMIT_TAG"
+  git commit -m "libeasykey ($TRAVIS_OS_NAME) | Commit $COMMIT_TAG"
 }
 
 upload_files() {

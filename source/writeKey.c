@@ -1,12 +1,14 @@
 // writeKey.c
 // Copyright (c) 2019 Jonathan Archer
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <unistd.h>
 
 #include "easykey.h"
+#include "easykey/extras.h"
 
 /*
 This function writes a value to a key. First it checks if the key already

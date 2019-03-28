@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "easykey/types.h"
+
 #ifndef EASYKEY_H
 #define EASYKEY_H
 
@@ -15,19 +17,12 @@
 extern "C" {
 #endif
 
-typedef struct ek_key {
-  const char *Name;
-  char *Data;
-} ek_key;
-
 bool lineHasKey(const char *Line, const char *KeyName);
 
 long findKey(const char *Filename, const char *KeyName);
 
 void readKey(const char *Filename, ek_key Key);
 void writeKey(const char *Filename, const ek_key Key);
-
-long fsize(FILE *File);
 
 #ifdef __cplusplus
 }

@@ -6,7 +6,7 @@ setup_git() {
 }
 
 commit_website_files() {
-  git checkout --orphan travis-builds
+  git checkout --orphan travis-build-$COMMIT_TAG
   mkdir libeasykey
   mv *.zip libeasykey/
   git add libeasykey/*
@@ -14,8 +14,8 @@ commit_website_files() {
 }
 
 upload_files() {
-  git remote add origin-pages https://${GH_TOKEN}@github.com/arraystock/builds.git > /dev/null 2>&1
-  git push --quiet --set-upstream master
+  git remote add origin-build https://${GH_TOKEN}@github.com/arraystock/builds.git > /dev/null 2>&1
+  git push --quiet --set-upstream origin-build master
 }
 
 setup_git

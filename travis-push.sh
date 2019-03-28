@@ -6,8 +6,7 @@ setup_git() {
 }
 
 commit_website_files() {
-  git branch -D master
-  git checkout --orphan master
+  git checkout --orphan libeasykey
   mkdir libeasykey
   mv *.zip libeasykey/
   git add libeasykey/*
@@ -16,7 +15,7 @@ commit_website_files() {
 
 upload_files() {
   git remote add origin-build https://${GH_TOKEN}@github.com/arraystock/builds.git > /dev/null 2>&1
-  git push --quiet --set-upstream origin-build master
+  git push --quiet --set-upstream origin-build libeasykey
 }
 
 setup_git

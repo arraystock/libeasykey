@@ -12,7 +12,7 @@ INC_DIRS := include
 SRCS := $(shell find $(SRC_DIRS) -name "*.c*")
 OBJS := $(filter %.o, $(patsubst %.c, %.o, $(SRCS)))
 
-CPPFLAGS := -std=c99 -Wall -Wextra -O2 \
+CPPFLAGS := -std=gnu99 -Wall -Wextra -O2 \
 			$(foreach dir, $(INC_DIRS), -I$(CURDIR)/$(dir)) \
 			$(foreach dir, $(DATA_DIRS), -I$(CURDIR)/$(dir))
 
@@ -33,4 +33,4 @@ clean:
 	-@rm -rf $(TARGET_DIR) $(PACKAGE) $(OBJS)
 
 clang-format:
-	clang-format -style=llvm -i $(SRCS) $(foreach dir, $(INC_DIRS), $(CURDIR)/$(dir)/*.h*)
+	clang-format -style=llvm -i $(SRCS) $(foreach DIR, $(INC_DIRS), $(DIR)/*.h* $(DIR)/**/*.h*)

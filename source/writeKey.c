@@ -26,6 +26,10 @@ void writeKey(const char *Filename, const ek_key Key) {
     File = fopen(Filename, "w+");
 
   if (Pos >= 0) {
+    // Rewrite the key in the same location. Involves reading the rest of the
+    // file after the key into memory, writing the new key, and writing back the
+    // rest of the file.
+
     // Set our position.
     fseek(File, Pos, SEEK_SET);
 
@@ -35,11 +39,6 @@ void writeKey(const char *Filename, const ek_key Key) {
     getline(&Line, &Len, File);
     int LineLen = strlen(Line);
     free(Line);
-
-    // First, we read in the rest of the file after the key about to be written.
-    // Then we overwrite the old key and write the new key + value to the same
-    // location. Thirdly, we write back the old data after the new key. And
-    // lastly, we truncate the file to remove possible garbage.
 
     // Get the size for how large our buffer should be.
     long BufferSize = fsize(File) + LineLen - Pos;
@@ -67,8 +66,14 @@ void writeKey(const char *Filename, const ek_key Key) {
     truncate(Filename, FilePos);
   } else {
     // Create the key at the end of the file since it does not exist.
-    fseek(File, 0, SEEK_END);
-    fprintf(File, "\n%s = %s", Key.Name, Key.Data);
+
+    // Check if there's a newline, and make one if there isn't.
+    fseek(File, -1, SEEK_END);
+    if (getc(File) != '\n')
+      fputc('\n', File);
+
+    // Write the key.
+    fprintf(File, "%s=%s", Key.Name, Key.Data);
     fclose(File);
   }
 }

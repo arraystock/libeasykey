@@ -23,7 +23,7 @@ $(TARGET_DIR)/$(TARGET): $(OBJS)
 	$(AR) -rcs $(TARGET_DIR)/$(TARGET) $(OBJS)
 
 $(PACKAGE): all
-	zip -r $(PACKAGE) $(TARGET_DIR) $(INC_DIRS)
+	zip -r $(PACKAGE) ./
 
 all: $(TARGET_DIR)/$(TARGET)
 

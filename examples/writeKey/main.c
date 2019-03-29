@@ -8,6 +8,7 @@
 
 int main() {
   ek_key MyKey;
+  MyKey.Section = "section1";
   MyKey.Name = "FRUITS";
   MyKey.Data = (char *)malloc(255 * sizeof(char));
 

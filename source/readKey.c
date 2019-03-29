@@ -14,7 +14,7 @@ the key's position (and make sure it exists), then trims off a newline if it
 exists (which should always be the case AFAIK).
 */
 void readKey(const char *Filename, ek_key Key) {
-  long int Pos = findKey(Filename, Key.Name);
+  long int Pos = findKey(Filename, Key);
 
   // If the key exists, then we continue.
   if (Pos >= 0) {

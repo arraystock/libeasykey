@@ -16,7 +16,7 @@ exists, and if the key does, the function will overwrite it. Otherwise, the
 function will create the key at the end of the file.
 */
 void writeKey(const char *Filename, const ek_key Key) {
-  long int Pos = findKey(Filename, Key.Name);
+  long int Pos = findKey(Filename, Key);
 
   // Open the file.
   FILE *File;
@@ -65,6 +65,8 @@ void writeKey(const char *Filename, const ek_key Key) {
     // takes up fewer characters).
     truncate(Filename, FilePos);
   } else {
+    if (Pos == EK_SECTION_NO_EXIST)
+      printf("\nError: Section does not exist!\n");
     // Create the key at the end of the file since it does not exist.
 
     // Check if there's a newline, and make one if there isn't.

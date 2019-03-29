@@ -9,6 +9,7 @@ extern "C" {
 #endif
 
 typedef struct ek_key {
+  const char *Section;
   const char *Name;
   char *Data;
 } ek_key;

@@ -32,7 +32,7 @@ long findKey(const char *Filename, ek_key Key) {
       // Make sure we don't read into the next section.
       if (isSection(Line) && !isSectionNamed(Line, Key.Section))
         return EK_KEY_NO_EXIST;
-      if (lineHasKey(Line, Key.Name))
+      if (isKey(Line, Key.Name))
         return ftell(File) - strlen(Line);
     }
     free(Line);

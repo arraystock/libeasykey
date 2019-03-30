@@ -1,4 +1,4 @@
-// lineHasKey.c
+// isKey.c
 // Copyright (c) 2019 Jonathan Archer
 
 #include <string.h>
@@ -9,7 +9,7 @@
 This function reads the beginning of a line and checks if it starts with the key
 name and if the key name has a proper assignment.
 */
-bool lineHasKey(const char *Line, const char *KeyName) {
+bool isKey(const char *Line, const char *KeyName) {
   if (strncmp(KeyName, Line, strlen(KeyName)) == 0) {
     // Probably safe to assume it's a proper key if it has the key name and
     // either a '=' or ':'.

@@ -21,7 +21,7 @@ bool isSection(const char *Line);
 bool isSectionNamed(const char *Line, const char *Section);
 long findSection(const char *Filename, const char *Section);
 
-bool lineHasKey(const char *Line, const char *KeyName);
+bool isKey(const char *Line, const char *KeyName);
 
 long findKey(const char *Filename, ek_key Key);
 

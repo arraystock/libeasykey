@@ -16,7 +16,8 @@ exists, and if the key does, the function will overwrite it. Otherwise, the
 function will create the key at the end of the file.
 */
 void writeKey(const char *Filename, const ek_key Key) {
-  long int Pos = findKey(Filename, Key);
+  long int SectionPos = findSection(Filename, Key.Section);
+  long int KeyPos = findKey(Filename, Key);
 
   // Open the file.
   FILE *File;
@@ -25,57 +26,59 @@ void writeKey(const char *Filename, const ek_key Key) {
   else
     File = fopen(Filename, "w+");
 
-  if (Pos >= 0) {
-    // Rewrite the key in the same location. Involves reading the rest of the
-    // file after the key into memory, writing the new key, and writing back the
-    // rest of the file.
-
-    // Set our position.
-    fseek(File, Pos, SEEK_SET);
-
-    // Read in the line to get its length.
-    char *Line = (char *)malloc(255 * sizeof(char));
-    size_t Len = 0;
-    getline(&Line, &Len, File);
-    int LineLen = strlen(Line);
-    free(Line);
-
-    // Get the size for how large our buffer should be.
-    long BufferSize = fsize(File) + LineLen - Pos;
-
-    // Read in the rest of the file.
-    char *Buffer = malloc(BufferSize);
-    fread(Buffer, BufferSize, 1, File);
-
-    // Re-set our position.
-    fseek(File, Pos, SEEK_SET);
-
-    // Create the key.
-    fprintf(File, "%s=%s\n", Key.Name, Key.Data);
-
-    // Overwrite the remaining data and free the buffer.
-    fputs(Buffer, File);
-    free(Buffer);
-
-    // Store our current position and close the file.
-    int FilePos = ftell(File);
-    fclose(File);
-
-    // Truncate the file, trimming off any garbage left (if the new key's value
-    // takes up fewer characters).
-    truncate(Filename, FilePos);
-  } else {
-    if (Pos == EK_SECTION_NO_EXIST)
-      printf("\nError: Section does not exist!\n");
-    // Create the key at the end of the file since it does not exist.
-
+  // If the section does not exist, then we must create it at the end of the
+  // file.
+  if (KeyPos == EK_SECTION_NO_EXIST) {
     // Check if there's a newline, and make one if there isn't.
     fseek(File, -1, SEEK_END);
     if (getc(File) != '\n')
       fputc('\n', File);
-
-    // Write the key.
+    // Write the section and the key.
+    fprintf(File, "[%s]\n", Key.Section);
     fprintf(File, "%s=%s", Key.Name, Key.Data);
-    fclose(File);
+    return;
   }
+
+  // Set our position.
+  if (KeyPos == EK_KEY_NO_EXIST)
+    fseek(File, SectionPos, SEEK_SET);
+  else
+    fseek(File, KeyPos, SEEK_SET);
+
+  // Read in the line to get its length.
+  char *Line = (char *)malloc(255 * sizeof(char));
+  size_t Len = 0;
+  getline(&Line, &Len, File);
+  int LineLen = strlen(Line);
+  free(Line);
+
+  // If the key does not exist, then we must create it at the start of the
+  // section.
+  if (KeyPos == EK_KEY_NO_EXIST)
+    KeyPos = ftell(File);
+
+  // Get the size for how large our buffer should be.
+  long BufferSize = fsize(File) + LineLen - KeyPos;
+
+  // Read in the rest of the file.
+  char *Buffer = malloc(BufferSize);
+  fread(Buffer, BufferSize, 1, File);
+
+  // Re-set our position.
+  fseek(File, KeyPos, SEEK_SET);
+
+  // Create the key.
+  fprintf(File, "%s=%s\n", Key.Name, Key.Data);
+
+  // Overwrite the remaining data and free the buffer.
+  fputs(Buffer, File);
+  free(Buffer);
+
+  // Store our current position and close the file.
+  int FilePos = ftell(File);
+  fclose(File);
+
+  // Truncate the file, trimming off any garbage left (if the new key's value
+  // takes up fewer characters).
+  truncate(Filename, FilePos);
 }

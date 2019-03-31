@@ -9,7 +9,7 @@
 #ifndef EASYKEY_H
 #define EASYKEY_H
 
-// #define EK_VER "0.01"
+#define EK_VER "0.01"
 
 enum { EK_KEY_NO_EXIST = -1, EK_SECTION_NO_EXIST = -2 };
 

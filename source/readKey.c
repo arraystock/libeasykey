@@ -44,11 +44,11 @@ void readKey(const char *Filename, ek_key Key) {
     // Move past key name.
     memmove(Key.Data, Key.Data + strlen(Key.Name) + AssignLen,
             strlen(Key.Data));
-    // Strip trailing newline.
-    if (Key.Data[strlen(Key.Data) - 1] == '\n')
-      Key.Data[strlen(Key.Data) - 1] = 0;
-    // Strip trailing whitespace.
-    while (Key.Data[strlen(Key.Data) - 1] == ' ')
+
+    // Strip trailing newline/whitespaces.
+    while (Key.Data[strlen(Key.Data) - 1] == '\r' ||
+           Key.Data[strlen(Key.Data) - 1] == '\n' ||
+           Key.Data[strlen(Key.Data) - 1] == ' ')
       Key.Data[strlen(Key.Data) - 1] = '\0';
   }
 }

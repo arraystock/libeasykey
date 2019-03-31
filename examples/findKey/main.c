@@ -3,9 +3,13 @@
 
 #include <easykey.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+ek_key MyKey;
 
 int main() {
-  printf("Key 'EXAMPLE_KEY' fpos: %ld\n",
-         findKey("../example.ini", "EXAMPLE_KEY"));
+  MyKey.Section = "section0";
+  MyKey.Name = "EXAMPLE_KEY";
+  printf("Key '%s' fpos: %ld\n", MyKey.Name, findKey("../example.ini", MyKey));
   return 0;
 }

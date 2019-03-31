@@ -29,6 +29,16 @@ all: $(TARGET_DIR)/$(TARGET)
 
 package: $(PACKAGE)
 
+install: $(TARGET_DIR)/$(TARGET)
+	cp $(TARGET_DIR)/$(TARGET) /usr/lib
+	cp -rf include/** /usr/include/
+	ldconfig -n -v /usr/lib
+
+uninstall:
+	rm -rf /usr/include/easykey*
+	rm /usr/lib/$(TARGET)
+	ldconfig -n -v /usr/lib
+
 clean:
 	-@rm -rf $(TARGET_DIR) $(PACKAGE) $(OBJS)
 

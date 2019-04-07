@@ -15,6 +15,7 @@ EK_KEY_NO_EXIST (-1).
 */
 long findKey(const char *Filename, ek_key Key) {
   long Pos = findSection(Filename, Key.Section);
+  long RetVal = EK_KEY_NO_EXIST;
   if (Pos != EK_SECTION_NO_EXIST) {
     FILE *File;
     if (access(Filename, F_OK) != -1)
@@ -31,15 +32,16 @@ long findKey(const char *Filename, ek_key Key) {
     while (getline(&Line, &Len, File) != -1) {
       // Make sure we don't read into the next section.
       if (isSection(Line) && !isSectionNamed(Line, Key.Section))
-        return EK_KEY_NO_EXIST;
-      if (isKey(Line, Key))
-        return ftell(File) - strlen(Line);
+        break;
+      if (isKey(Line, Key)) {
+        RetVal = ftell(File) - strlen(Line);
+        break;
+      }
     }
     free(Line);
     fclose(File);
-  } else
-    return EK_SECTION_NO_EXIST;
-  return EK_KEY_NO_EXIST;
+  }
+  return RetVal;
 }
 
 /*

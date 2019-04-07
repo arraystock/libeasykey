@@ -31,14 +31,15 @@ void writeKey(const char *Filename, const ek_key Key) {
   if (SectionPos == EK_SECTION_NO_EXIST) {
     fseek(File, 0, SEEK_END);
     // Write the section.
-    fprintf(File, "\n[%s]", Key.Section);
+    fprintf(File, "[%s]\n", Key.Section);
+    SectionPos = ftell(File);
   }
 
   // Set our position.
-  if (KeyPos >= 0)
-    fseek(File, 0, SEEK_END);
-  else
+  if (KeyPos != EK_KEY_NO_EXIST)
     fseek(File, KeyPos, SEEK_SET);
+  else
+    fseek(File, SectionPos, SEEK_SET);
 
   // Read in the line to get its length.
   char *Line = (char *)malloc(255 * sizeof(char));
@@ -63,7 +64,7 @@ void writeKey(const char *Filename, const ek_key Key) {
   fseek(File, KeyPos, SEEK_SET);
 
   // Create the key.
-  fprintf(File, "\n%s=%s", Key.Name, Key.Data);
+  fprintf(File, "%s=%s\n", Key.Name, Key.Data);
 
   // Overwrite the remaining data and free the buffer.
   fputs(Buffer, File);

@@ -27,7 +27,7 @@ long findSection(const char *Filename, const char *Section) {
 
   // Read in every line until we find the section.
   while (getline(&Line, &Len, File) != -1)
-    if (isSection(Line) && isSectionNamed(Line, Section)) {
+    if (isSectionNamed(Line, Section)) {
       // Set the position.
       Pos = ftell(File) - strlen(Line);
       break;
@@ -50,6 +50,6 @@ Checks a line to see if it is a specific section.
 bool isSectionNamed(const char *Line, const char *Section) {
   if (isSection(Line))
     return (strncmp(&Line[1], Section, strlen(Section)) == 0 &&
-            strchr(Line, ']') != NULL);
+            Line[strlen(Section) + 1] == ']');
   return false;
 }

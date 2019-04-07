@@ -28,20 +28,15 @@ void writeKey(const char *Filename, const ek_key Key) {
 
   // If the section does not exist, then we must create it at the end of the
   // file.
-  if (KeyPos == EK_SECTION_NO_EXIST) {
-    // Check if there's a newline, and make one if there isn't.
-    fseek(File, -1, SEEK_END);
-    if (getc(File) != '\n')
-      fputc('\n', File);
-    // Write the section and the key.
-    fprintf(File, "[%s]\n", Key.Section);
-    fprintf(File, "%s=%s", Key.Name, Key.Data);
-    return;
+  if (SectionPos == EK_SECTION_NO_EXIST) {
+    fseek(File, 0, SEEK_END);
+    // Write the section.
+    fprintf(File, "\n[%s]", Key.Section);
   }
 
   // Set our position.
-  if (KeyPos == EK_KEY_NO_EXIST)
-    fseek(File, SectionPos, SEEK_SET);
+  if (KeyPos >= 0)
+    fseek(File, 0, SEEK_END);
   else
     fseek(File, KeyPos, SEEK_SET);
 
@@ -55,7 +50,7 @@ void writeKey(const char *Filename, const ek_key Key) {
   // If the key does not exist, then we must create it at the start of the
   // section.
   if (KeyPos == EK_KEY_NO_EXIST)
-    KeyPos = ftell(File);
+    KeyPos = SectionPos + LineLen;
 
   // Get the size for how large our buffer should be.
   long BufferSize = fsize(File) + LineLen - KeyPos;
@@ -68,7 +63,7 @@ void writeKey(const char *Filename, const ek_key Key) {
   fseek(File, KeyPos, SEEK_SET);
 
   // Create the key.
-  fprintf(File, "%s=%s\n", Key.Name, Key.Data);
+  fprintf(File, "\n%s=%s", Key.Name, Key.Data);
 
   // Overwrite the remaining data and free the buffer.
   fputs(Buffer, File);

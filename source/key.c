@@ -23,12 +23,11 @@ long findKey(const char *Filename, ek_key Key) {
     else
       File = fopen(Filename, "w+");
 
-    char *Line = (char *)malloc(255 * sizeof(char));
-    size_t Len = 0;
-
     fseek(File, Pos, SEEK_SET);
 
     // Read in every line until we find the key.
+    char *Line = NULL;
+    size_t Len = 0;
     while (getline(&Line, &Len, File) != -1) {
       // Make sure we don't read into the next section.
       if (isSection(Line) && !isSectionNamed(Line, Key.Section))
@@ -38,7 +37,7 @@ long findKey(const char *Filename, ek_key Key) {
         break;
       }
     }
-    free(Line);
+    free(Line); // Memory was allocated by getline().
     fclose(File);
   }
   return RetVal;

@@ -42,11 +42,11 @@ void writeKey(const char *Filename, const ek_key Key) {
     fseek(File, SectionPos, SEEK_SET);
 
   // Read in the line to get its length.
-  char *Line = (char *)malloc(255 * sizeof(char));
+  char *Line = NULL;
   size_t Len = 0;
   getline(&Line, &Len, File);
   Len = strlen(Line);
-  free(Line);
+  free(Line); // Memory was allocated by getline().
 
   // If the key does not exist, then we must create it at the start of the
   // section.

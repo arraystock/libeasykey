@@ -22,17 +22,16 @@ long findSection(const char *Filename, const char *Section) {
   else
     File = fopen(Filename, "w+");
 
-  char *Line = (char *)malloc(255 * sizeof(char));
-  size_t Len = 0;
-
   // Read in every line until we find the section.
+  char *Line = NULL;
+  size_t Len = 0;
   while (getline(&Line, &Len, File) != -1)
     if (isSectionNamed(Line, Section)) {
       // Set the position.
       Pos = ftell(File) - strlen(Line);
       break;
     }
-  free(Line);
+  free(Line); // Memory was allocated by getline().
   fclose(File);
   return Pos;
 }

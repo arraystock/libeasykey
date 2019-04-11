@@ -33,7 +33,7 @@ long findKey(const char *Filename, ek_key Key) {
       // Make sure we don't read into the next section.
       if (isSection(Line) && !isSectionNamed(Line, Key.Section))
         break;
-      if (isKey(Line, Key)) {
+      if (isKeyNamed(Line, Key)) {
         RetVal = ftell(File) - strlen(Line);
         break;
       }
@@ -48,13 +48,7 @@ long findKey(const char *Filename, ek_key Key) {
 This function reads the beginning of a line and checks if it starts with the key
 name and if the key name has a proper assignment.
 */
-bool isKey(const char *Line, ek_key Key) {
-  if (strncmp(Key.Name, Line, strlen(Key.Name)) == 0) {
-    // Probably safe to assume it's a proper key if it has the key name and
-    // either a '=' or ':'.
-    // TODO: Do some sort of strnstr to check just the bounds of the assignment.
-    return (strstr(&Line[strlen(Key.Name)], "=") == NULL ||
-            strstr(&Line[strlen(Key.Name)], ":") == NULL);
-  }
-  return false;
+bool isKeyNamed(const char *Line, ek_key Key) {
+  return (strncmp(Key.Name, Line, strlen(Key.Name)) == 0 &&
+          Line[strlen(Key.Name)] == '=');
 }

@@ -45,16 +45,16 @@ void writeKey(const char *Filename, const ek_key Key) {
   char *Line = (char *)malloc(255 * sizeof(char));
   size_t Len = 0;
   getline(&Line, &Len, File);
-  int LineLen = strlen(Line);
+  Len = strlen(Line);
   free(Line);
 
   // If the key does not exist, then we must create it at the start of the
   // section.
   if (KeyPos == EK_KEY_NO_EXIST)
-    KeyPos = SectionPos + LineLen;
+    KeyPos = SectionPos + Len;
 
   // Get the size for how large our buffer should be.
-  long BufferSize = fsize(File) + LineLen - KeyPos;
+  long BufferSize = fsize(File) + Len - KeyPos;
 
   // Read in the rest of the file.
   char *Buffer = malloc(BufferSize);

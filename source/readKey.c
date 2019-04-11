@@ -33,17 +33,8 @@ void readKey(const char *Filename, ek_key Key) {
     getline(&Key.Data, &Len, File);
     fclose(File);
 
-    // Detect assignment length.
-    int AssignLen;
-    for (AssignLen = 0; Key.Data[strlen(Key.Name) + AssignLen] == ' ' ||
-                        Key.Data[strlen(Key.Name) + AssignLen] == '=' ||
-                        Key.Data[strlen(Key.Name) + AssignLen] == ':';
-         AssignLen++)
-      ;
-
     // Move past key name.
-    memmove(Key.Data, Key.Data + strlen(Key.Name) + AssignLen,
-            strlen(Key.Data));
+    strcpy(Key.Data, Key.Data + strlen(Key.Name) + 1);
 
     // Strip trailing newline/whitespaces.
     while (Key.Data[strlen(Key.Data) - 1] == '\r' ||

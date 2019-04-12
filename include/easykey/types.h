@@ -31,11 +31,19 @@ SOFTWARE.
 extern "C" {
 #endif
 
+#define EK_MAX_KEYS 64
+
+enum { EK_KEY_NO_EXIST = -1, EK_SECTION_NO_EXIST = -2 };
+
 typedef struct ek_key {
-  const char *Section;
-  const char *Name;
+  char *Section;
+  char *Name;
   char *Data;
 } ek_key;
+
+typedef struct ek_ini {
+  ek_key Keys[EK_MAX_KEYS];
+} ek_ini;
 
 #ifdef __cplusplus
 }

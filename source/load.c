@@ -47,6 +47,7 @@ void iniLoad(const char *Filename, ek_ini *Ini) {
         Line[strlen(Line) - 1] = '\0';
 
       if (isSection(Line)) {
+        Line = strtok(&Line[1], "]");
         Section = realloc(Section, strlen(Line));
         strcpy(Section, Line);
       }

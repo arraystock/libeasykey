@@ -1,4 +1,4 @@
-// readKey.c
+// get.c
 
 /*
 MIT License
@@ -36,26 +36,13 @@ SOFTWARE.
 This function reads the value of a key into a buffer. It also trims off trailing
 newlines and spaces.
 */
-void readKey(const char *Filename, ek_key Key) {
-  long int Pos = findKey(Filename, Key);
-
-  // If the key exists, then we continue.
-  if (Pos >= 0) {
-    FILE *File = rwopen(Filename);
-
-    // Read in the line, then close the file.
-    fseek(File, Pos, SEEK_SET);
-    size_t Len;
-    getline(&Key.Data, &Len, File);
-    fclose(File);
-
-    // Move past key name.
-    strcpy(Key.Data, Key.Data + strlen(Key.Name) + 1);
-
-    // Strip trailing newline/whitespaces.
-    while (Key.Data[strlen(Key.Data) - 1] == '\r' ||
-           Key.Data[strlen(Key.Data) - 1] == '\n' ||
-           Key.Data[strlen(Key.Data) - 1] == ' ')
-      Key.Data[strlen(Key.Data) - 1] = '\0';
-  }
+char *iniGetKey(const ek_ini Ini, ek_key *Key) {
+  for (int i = 0; i <= EK_MAX_KEYS; i++)
+    if (!strcmp(Ini.Keys[i].Section, Key->Section) &&
+        !strcmp(Ini.Keys[i].Name, Key->Name)) {
+      Key->Data = realloc(Key->Data, strlen(Ini.Keys[i].Data));
+      strcpy(Key->Data, Ini.Keys[i].Data);
+      break;
+    }
+  return Key->Data;
 }

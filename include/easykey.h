@@ -38,6 +38,8 @@ SOFTWARE.
 extern "C" {
 #endif
 
+void iniLoad(const char *Filename, ek_ini *Ini);
+
 bool isSection(const char *Line);
 bool isSectionNamed(const char *Line, const char *Section);
 long findSection(const char *Filename, const char *Section);
@@ -46,7 +48,7 @@ bool isKey(const char *Line);
 bool isKeyNamed(const char *Line, const ek_key Key);
 long findKey(const char *Filename, const ek_key Key);
 
-void readKey(const char *Filename, ek_key Key);
+char *iniGetKey(const ek_ini Ini, ek_key *Key);
 void writeKey(const char *Filename, const ek_key Key);
 
 #ifdef __cplusplus

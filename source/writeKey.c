@@ -19,12 +19,7 @@ void writeKey(const char *Filename, const ek_key Key) {
   long int SectionPos = findSection(Filename, Key.Section);
   long int KeyPos = findKey(Filename, Key);
 
-  // Open the file.
-  FILE *File;
-  if (access(Filename, F_OK) != -1)
-    File = fopen(Filename, "r+");
-  else
-    File = fopen(Filename, "w+");
+  FILE *File = rwopen(Filename);
 
   // If the section does not exist, then create it.
   if (SectionPos == EK_SECTION_NO_EXIST) {

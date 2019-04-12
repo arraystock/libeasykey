@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include "easykey.h"
+#include "easykey/extras.h"
 
 /*
 This function checks if a section exists in a given file, and returns the
@@ -15,12 +16,7 @@ EK_SECTION_NO_EXIST (-2).
 */
 long findSection(const char *Filename, const char *Section) {
   long Pos = EK_SECTION_NO_EXIST;
-  FILE *File;
-
-  if (access(Filename, F_OK) != -1)
-    File = fopen(Filename, "r+");
-  else
-    File = fopen(Filename, "w+");
+  FILE *File = rwopen(Filename);
 
   // Read in every line until we find the section.
   char *Line = NULL;

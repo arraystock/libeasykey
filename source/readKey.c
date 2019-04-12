@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include "easykey.h"
+#include "easykey/extras.h"
 
 /*
 This function reads the value of a key into a buffer. It also trims off trailing
@@ -17,12 +18,7 @@ void readKey(const char *Filename, ek_key Key) {
 
   // If the key exists, then we continue.
   if (Pos >= 0) {
-    // Open the file.
-    FILE *File;
-    if (access(Filename, F_OK) != -1)
-      File = fopen(Filename, "r+");
-    else
-      File = fopen(Filename, "w+");
+    FILE *File = rwopen(Filename);
 
     // Read in the line, then close the file.
     fseek(File, Pos, SEEK_SET);

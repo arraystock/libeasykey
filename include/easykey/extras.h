@@ -35,6 +35,8 @@ extern "C" {
 
 long fsize(FILE *File);
 
+FILE *rwopen(const char *Filename);
+
 #ifdef __cplusplus
 }
 #endif

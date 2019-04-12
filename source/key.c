@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include "easykey.h"
+#include "easykey/extras.h"
 
 /*
 This function checks if a key exists in a given file, and returns the position
@@ -17,12 +18,7 @@ long findKey(const char *Filename, ek_key Key) {
   long Pos = findSection(Filename, Key.Section);
   long RetVal = EK_KEY_NO_EXIST;
   if (Pos != EK_SECTION_NO_EXIST) {
-    // Open the file.
-    FILE *File;
-    if (access(Filename, F_OK) != -1)
-      File = fopen(Filename, "r+");
-    else
-      File = fopen(Filename, "w+");
+    FILE *File = rwopen(Filename);
 
     // Read in every line until we find the key.
     char *Line = NULL;

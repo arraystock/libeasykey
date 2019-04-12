@@ -3,6 +3,9 @@
 
 #include "easykey.h"
 
+/*
+Returns the size of a file.
+*/
 long fsize(FILE *File) {
   long Pos = ftell(File);
   fseek(File, 0, SEEK_END);

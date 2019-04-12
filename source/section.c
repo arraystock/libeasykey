@@ -24,7 +24,7 @@ long findSection(const char *Filename, const char *Section) {
 
   // Read in every line until we find the section.
   char *Line = NULL;
-  size_t Len = 0;
+  size_t Len;
   while (getline(&Line, &Len, File) != -1)
     if (isSectionNamed(Line, Section)) {
       // Set the position.

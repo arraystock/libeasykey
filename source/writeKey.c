@@ -11,7 +11,7 @@
 #include "easykey/extras.h"
 
 /*
-This function writes a value to a key. First it checks if the key already
+Writes a value to a key. First it checks if the key already
 exists, and if the key does, the function will overwrite it. Otherwise, the
 function will create the key at the end of the file.
 */
@@ -26,8 +26,7 @@ void writeKey(const char *Filename, const ek_key Key) {
   else
     File = fopen(Filename, "w+");
 
-  // If the section does not exist, then we must create it at the end of the
-  // file.
+  // If the section does not exist, then create it.
   if (SectionPos == EK_SECTION_NO_EXIST) {
     fseek(File, 0, SEEK_END);
     // Write the section.
@@ -43,38 +42,30 @@ void writeKey(const char *Filename, const ek_key Key) {
 
   // Read in the line to get its length.
   char *Line = NULL;
-  size_t Len = 0;
+  size_t Len;
   getline(&Line, &Len, File);
   Len = strlen(Line);
   free(Line); // Memory was allocated by getline().
 
-  // If the key does not exist, then we must create it at the start of the
-  // section.
+  // If the key does not exist, then create it at the start of the section.
   if (KeyPos == EK_KEY_NO_EXIST)
     KeyPos = SectionPos + Len;
 
-  // Get the size for how large our buffer should be.
+  // Read the remainder of the file into a buffer.
   long BufferSize = fsize(File) + Len - KeyPos;
-
-  // Read in the rest of the file.
   char *Buffer = malloc(BufferSize);
   fread(Buffer, BufferSize, 1, File);
 
-  // Re-set our position.
-  fseek(File, KeyPos, SEEK_SET);
-
   // Create the key.
+  fseek(File, KeyPos, SEEK_SET);
   fprintf(File, "%s=%s\n", Key.Name, Key.Data);
 
   // Overwrite the remaining data and free the buffer.
   fputs(Buffer, File);
   free(Buffer);
 
-  // Store our current position and close the file.
-  int FilePos = ftell(File);
+  // Store our current position, close the file, and truncate to our new length.
+  int NewSize = ftell(File);
   fclose(File);
-
-  // Truncate the file, trimming off any garbage left (if the new key's value
-  // takes up fewer characters).
-  truncate(Filename, FilePos);
+  truncate(Filename, NewSize); // Trims off any garbage.
 }

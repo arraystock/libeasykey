@@ -9,9 +9,8 @@
 #include "easykey.h"
 
 /*
-This function reads in the value of a given key. It calls findKey() first to get
-the key's position (and make sure it exists), then trims off a newline if it
-exists (which should always be the case AFAIK).
+This function reads the value of a key into a buffer. It also trims off trailing
+newlines and spaces.
 */
 void readKey(const char *Filename, ek_key Key) {
   long int Pos = findKey(Filename, Key);
@@ -25,11 +24,9 @@ void readKey(const char *Filename, ek_key Key) {
     else
       File = fopen(Filename, "w+");
 
-    // Set our position.
+    // Read in the line, then close the file.
     fseek(File, Pos, SEEK_SET);
-
-    // Read in the line.
-    size_t Len = sizeof(Key.Data);
+    size_t Len;
     getline(&Key.Data, &Len, File);
     fclose(File);
 

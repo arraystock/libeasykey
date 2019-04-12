@@ -17,21 +17,22 @@ long findKey(const char *Filename, ek_key Key) {
   long Pos = findSection(Filename, Key.Section);
   long RetVal = EK_KEY_NO_EXIST;
   if (Pos != EK_SECTION_NO_EXIST) {
+    // Open the file.
     FILE *File;
     if (access(Filename, F_OK) != -1)
       File = fopen(Filename, "r+");
     else
       File = fopen(Filename, "w+");
 
-    fseek(File, Pos, SEEK_SET);
-
     // Read in every line until we find the key.
     char *Line = NULL;
-    size_t Len = 0;
+    size_t Len;
+    fseek(File, Pos, SEEK_SET);
     while (getline(&Line, &Len, File) != -1) {
       // Make sure we don't read into the next section.
       if (isSection(Line) && !isSectionNamed(Line, Key.Section))
         break;
+      // If it is the key, then we store the value and break.
       if (isKeyNamed(Line, Key)) {
         RetVal = ftell(File) - strlen(Line);
         break;

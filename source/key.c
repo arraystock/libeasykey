@@ -14,7 +14,7 @@ This function checks if a key exists in a given file, and returns the position
 if it exists. If the key does not exist, then the function returns
 EK_KEY_NO_EXIST (-1).
 */
-long findKey(const char *Filename, ek_key Key) {
+long findKey(const char *Filename, const ek_key Key) {
   long Pos = findSection(Filename, Key.Section);
   long RetVal = EK_KEY_NO_EXIST;
   if (Pos != EK_SECTION_NO_EXIST) {
@@ -44,7 +44,7 @@ long findKey(const char *Filename, ek_key Key) {
 This function reads the beginning of a line and checks if it starts with the key
 name and if the key name has a proper assignment.
 */
-bool isKeyNamed(const char *Line, ek_key Key) {
+bool isKeyNamed(const char *Line, const ek_key Key) {
   return (strncmp(Key.Name, Line, strlen(Key.Name)) == 0 &&
           Line[strlen(Key.Name)] == '=');
 }

@@ -44,6 +44,7 @@ bool isSection(const char *Line);
 bool isSectionNamed(const char *Line, const char *Section);
 long findSection(const char *Filename, const char *Section);
 
+bool isKey(const char *Line);
 bool isKeyNamed(const char *Line, const ek_key Key);
 long findKey(const char *Filename, const ek_key Key);
 

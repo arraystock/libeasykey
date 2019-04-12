@@ -67,6 +67,12 @@ long findKey(const char *Filename, const ek_key Key) {
 This function reads the beginning of a line and checks if it starts with the key
 name and if the key name has a proper assignment.
 */
+bool isKey(const char *Line) { return (strchr(Line, '=') != NULL); }
+
+/*
+This function reads the beginning of a line and checks if it starts with the key
+name and if the key name has a proper assignment.
+*/
 bool isKeyNamed(const char *Line, const ek_key Key) {
   return (strncmp(Key.Name, Line, strlen(Key.Name)) == 0 &&
           Line[strlen(Key.Name)] == '=');

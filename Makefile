@@ -12,7 +12,7 @@ INC_DIRS := include
 SRCS := $(shell find $(SRC_DIRS) -name "*.c*")
 OBJS := $(filter %.o, $(patsubst %.c, %.o, $(SRCS)))
 
-CPPFLAGS := -std=gnu99 -Wall -Wextra -O2 \
+CPPFLAGS := -std=gnu11 -Wall -Wextra -O2 \
 			$(foreach dir, $(INC_DIRS), -I$(CURDIR)/$(dir)) \
 			$(foreach dir, $(DATA_DIRS), -I$(CURDIR)/$(dir))
 

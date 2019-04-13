@@ -29,19 +29,16 @@ SOFTWARE.
 
 #include "easykey.h"
 
+#define Key Ini->Keys[Ini->Count]
+
 void iniLoad(const char *Filename, ek_ini *Ini) {
-  // Clear out structure.
-  for (int i = 0; i <= EK_MAX_KEYS; i++) {
-    Ini->Keys[i].Section = NULL;
-    Ini->Keys[i].Name = NULL;
-    Ini->Keys[i].Data = NULL;
-  }
   FILE *File = fopen(Filename, "r+");
   if (File != NULL) {
-    char *Section = NULL;
+    char Section[32] = "default";
     char *Line = NULL;
     size_t Len;
-    for (int i = 0; getline(&Line, &Len, File) != -1 && i <= EK_MAX_KEYS;) {
+    for (Ini->Count = 0;
+         getline(&Line, &Len, File) != -1 && Ini->Count < EK_MAX_KEYS;) {
       // Strip trailing newline/whitespaces.
       while (Line[strlen(Line) - 1] == '\n' || Line[strlen(Line) - 1] == '\r' ||
              Line[strlen(Line) - 1] == ' ')
@@ -49,21 +46,20 @@ void iniLoad(const char *Filename, ek_ini *Ini) {
 
       if (Line[0] == '[' && strchr(Line, ']') != NULL) {
         Line = strtok(&Line[1], "]");
-        Section = realloc(Section, strlen(Line));
-        strcpy(Section, Line);
+        strncpy(Section, Line, strlen(Line));
       }
 
       else if (strchr(Line, '=') != NULL) {
-        Ini->Keys[i].Section = malloc(strlen(Section));
-        strcpy(Ini->Keys[i].Section, Section);
+        strncpy(Key.Section, Section, strlen(Section));
 
-        Ini->Keys[i].Data = malloc(strlen(&Line[strcspn(Line, "=") + 1]));
-        strcpy(Ini->Keys[i].Data, &Line[strcspn(Line, "=") + 1]);
+        strncpy(Key.Data, &Line[strcspn(Line, "=") + 1],
+                strlen(&Line[strcspn(Line, "=") + 1]));
 
-        Ini->Keys[i].Name = malloc(strlen(strtok(Line, "=")));
-        strcpy(Ini->Keys[i].Name, Line);
+        strncpy(Key.Name, Line, strlen(strtok(Line, "=")));
 
-        i++;
+        // printf("%s %s %s.\n", Key.Section, Key.Name, Key.Data);
+
+        Ini->Count++;
       }
     }
     fclose(File);

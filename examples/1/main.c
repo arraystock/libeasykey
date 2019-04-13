@@ -30,7 +30,7 @@ SOFTWARE.
 
 #define IniFile "../example.ini"
 
-ek_key Key = {"section2", "NAME", NULL};
+ek_key Key = {"section2", "NAME", ""};
 
 int main() {
   // Load the ini file to memory.
@@ -42,9 +42,6 @@ int main() {
 
   // Print the contents of the key.
   printf("Key '%s' contains: '%s'\n", Key.Name, Key.Data);
-
-  // Free because 'iniGetKey()' allocates memory.
-  free(Key.Data);
 
   return 0;
 }

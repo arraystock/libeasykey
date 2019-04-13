@@ -32,12 +32,9 @@ SOFTWARE.
 void iniFlush(const char *Filename, ek_ini Ini) {
   FILE *File = fopen(Filename, "w+");
   if (File != NULL) {
-    char *Section = malloc(sizeof("default"));
-    strcpy(Section, "default");
-
-    for (int i = 0; i <= EK_MAX_KEYS && Ini.Keys[i].Name != NULL; i++) {
+    char Section[32] = "default";
+    for (int i = 0; i < Ini.Count; i++) {
       if (strcmp(Ini.Keys[i].Section, Section)) {
-        Section = realloc(Section, strlen(Ini.Keys[i].Section));
         strcpy(Section, Ini.Keys[i].Section);
         fprintf(File, "[%s]\n", Section);
       }

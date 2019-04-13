@@ -31,7 +31,7 @@ SOFTWARE.
 
 #define IniFile "../example.ini"
 
-ek_key Key = {"section1", "FRUITS", NULL};
+ek_key Key = {"section1", "FRUITS", ""};
 
 int main() {
   // Load the ini file to memory.
@@ -41,18 +41,16 @@ int main() {
   // Get the key.
   iniGetKey(Ini, &Key);
 
-  printf("Key '%s' contains: %s\n", Key.Name, Key.Data);
+  printf("Key '%s' contains: '%s'...\n", Key.Name, Key.Data);
 
   // Set the key.
-  Key.Data = realloc(Key.Data, sizeof("Pears Oranges"));
   strcpy(Key.Data, "Pears Oranges");
   iniSetKey(&Ini, Key);
 
   iniGetKey(Ini, &Key);
-  printf("Key '%s' contains: %s\n", Key.Name, Key.Data);
+  printf("And now key '%s' contains: '%s'.\n", Key.Name, Key.Data);
 
   iniFlush(IniFile, Ini);
 
-  free(Key.Data);
   return 0;
 }

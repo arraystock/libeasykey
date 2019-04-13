@@ -1,4 +1,4 @@
-// easykey.h
+// set.c
 
 /*
 MIT License
@@ -24,35 +24,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <stdbool.h>
-#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "easykey/types.h"
+#include "easykey.h"
 
-#ifndef EASYKEY_H
-#define EASYKEY_H
-
-#define EK_VER "v0.02"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void iniLoad(const char *Filename, ek_ini *Ini);
-
-bool isSection(const char *Line);
-bool isSectionNamed(const char *Line, const char *Section);
-long findSection(const char *Filename, const char *Section);
-
-bool isKey(const char *Line);
-bool isKeyNamed(const char *Line, const ek_key Key);
-long findKey(const char *Filename, const ek_key Key);
-
-char *iniGetKey(const ek_ini Ini, ek_key *Key);
-void iniSetKey(ek_ini Ini, const ek_key Key);
-
-#ifdef __cplusplus
+/*
+Sets a key's value. Note that if the key to be set does not already exist, then
+the data may be out of sort. Doesn't really matter to the program, but the ini
+file will become segmented.
+*/
+void iniSetKey(ek_ini Ini, const ek_key Key) {
+  int i;
+  for (i = 0; i <= EK_MAX_KEYS && Ini.Keys[i].Name != NULL; i++)
+    // Get to the key.
+    if (!strcmp(Ini.Keys[i].Section, Key.Section) &&
+        !strcmp(Ini.Keys[i].Name, Key.Name)) {
+      Ini.Keys[i].Data = realloc(Ini.Keys[i].Data, strlen(Key.Data));
+      strcpy(Ini.Keys[i].Data, Key.Data);
+      return;
+    }
+  // If we get this far, then the key does not exist. Add it to where the for()
+  // loop left off.
+  Ini.Keys[i] = Key;
+  // TODO: Sort?
+  // TODO: Flush to file
 }
-#endif
-
-#endif

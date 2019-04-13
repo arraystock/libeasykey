@@ -29,7 +29,8 @@ SOFTWARE.
 
 #include "easykey.h"
 
-#define Key Ini->Keys[Ini->Count]
+#define Count Ini->Count
+#define Key Ini->Keys[Count]
 
 void iniLoad(const char *Filename, ek_ini *Ini) {
   FILE *File = fopen(Filename, "r+");
@@ -37,29 +38,22 @@ void iniLoad(const char *Filename, ek_ini *Ini) {
     char Section[32] = "default";
     char *Line = NULL;
     size_t Len;
-    for (Ini->Count = 0;
-         getline(&Line, &Len, File) != -1 && Ini->Count < EK_MAX_KEYS;) {
+    for (Count = 0; getline(&Line, &Len, File) != -1 && Count < EK_MAX_KEYS;) {
       // Strip trailing newline/whitespaces.
       while (Line[strlen(Line) - 1] == '\n' || Line[strlen(Line) - 1] == '\r' ||
              Line[strlen(Line) - 1] == ' ')
         Line[strlen(Line) - 1] = '\0';
-
+      // If section... else if key...
       if (Line[0] == '[' && strchr(Line, ']') != NULL) {
+        // Set the current section.
         Line = strtok(&Line[1], "]");
         strncpy(Section, Line, strlen(Line));
-      }
-
-      else if (strchr(Line, '=') != NULL) {
-        strncpy(Key.Section, Section, strlen(Section));
-
-        strncpy(Key.Data, &Line[strcspn(Line, "=") + 1],
-                strlen(&Line[strcspn(Line, "=") + 1]));
-
-        strncpy(Key.Name, Line, strlen(strtok(Line, "=")));
-
-        // printf("%s %s %s.\n", Key.Section, Key.Name, Key.Data);
-
-        Ini->Count++;
+      } else if (strchr(Line, '=') != NULL) {
+        // Copy in the key.
+        strcpy(Key.Section, Section);
+        strcpy(Key.Data, &Line[strcspn(Line, "=") + 1]);
+        strcpy(Key.Name, strtok(Line, "="));
+        Count++;
       }
     }
     fclose(File);

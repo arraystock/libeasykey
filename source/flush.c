@@ -1,4 +1,4 @@
-// easykey.h
+// flush.c
 
 /*
 MIT License
@@ -24,37 +24,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+#include "easykey.h"
+#include "easykey/extras.h"
 #include "easykey/types.h"
 
-#ifndef EASYKEY_H
-#define EASYKEY_H
+void iniFlush(const char *Filename, ek_ini Ini) {
+  FILE *File = fopen(Filename, "w+");
+  if (File != NULL) {
+    char *Section = malloc(sizeof("default"));
+    strcpy(Section, "default");
 
-#define EK_VER "v0.02"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void iniLoad(const char *Filename, ek_ini *Ini);
-
-bool isSection(const char *Line);
-bool isSectionNamed(const char *Line, const char *Section);
-long findSection(const char *Filename, const char *Section);
-
-bool isKey(const char *Line);
-bool isKeyNamed(const char *Line, const ek_key Key);
-long findKey(const char *Filename, const ek_key Key);
-
-void iniFlush(const char *Filename, ek_ini Ini);
-
-char *iniGetKey(const ek_ini Ini, ek_key *Key);
-void iniSetKey(ek_ini *Ini, const ek_key Key);
-
-#ifdef __cplusplus
+    for (int i = 0; i <= EK_MAX_KEYS && Ini.Keys[i].Name != NULL; i++) {
+      if (strcmp(Ini.Keys[i].Section, Section)) {
+        Section = realloc(Section, strlen(Ini.Keys[i].Section));
+        strcpy(Section, Ini.Keys[i].Section);
+        fprintf(File, "[%s]\n", Section);
+      }
+      fprintf(File, "%s=%s\n", Ini.Keys[i].Name, Ini.Keys[i].Data);
+    }
+    fclose(File);
+  }
 }
-#endif
-
-#endif

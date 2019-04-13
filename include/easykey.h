@@ -49,7 +49,7 @@ bool isKeyNamed(const char *Line, const ek_key Key);
 long findKey(const char *Filename, const ek_key Key);
 
 char *iniGetKey(const ek_ini Ini, ek_key *Key);
-void iniSetKey(ek_ini Ini, const ek_key Key);
+void iniSetKey(ek_ini *Ini, const ek_key Key);
 
 #ifdef __cplusplus
 }

@@ -6,13 +6,12 @@ TARGET := example.out
 SRCS := main.c
 OBJS := $(filter %.o, $(patsubst %.c, %.o, $(SRCS)))
 
-CPPFLAGS := -Wall -Wextra -O2 \
-			-I../../include
+CPPFLAGS := -Wall -Wextra -O2
 
 .PHONY: all clean clang-format
 
 $(TARGET): $(OBJS)
-	$(CC) -o $(TARGET) $(OBJS) -L../../lib -leasykey
+	$(CC) -o $(TARGET) $(OBJS) -leasykey
 
 all: $(TARGET)
 

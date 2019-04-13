@@ -1,4 +1,4 @@
-// easykey.h
+// set.c
 
 /*
 MIT License
@@ -24,28 +24,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <stdbool.h>
-#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "easykey/types.h"
+#include "easykey.h"
 
-#ifndef EASYKEY_H
-#define EASYKEY_H
-
-#define EK_VER "v0.02"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void iniLoad(const char *Filename, ek_ini *Ini);
-void iniFlush(const char *Filename, ek_ini Ini);
-
-char *iniGetKey(const ek_ini Ini, ek_key *Key);
-void iniSetKey(ek_ini *Ini, const ek_key Key);
-
-#ifdef __cplusplus
+/*
+Sets a key's value. Note that if the key to be set does not already exist, then
+the data may be out of sort. Doesn't really matter to the program, but the ini
+file will become segmented.
+*/
+void iniSetKey(ek_ini *Ini, const ek_key Key) {
+  for (int i = 0; i < EK_MAX_KEYS; i++)
+    // Get to the key.
+    if (!strcmp(Ini->Keys[i].Section, Key.Section) &&
+        !strcmp(Ini->Keys[i].Name, Key.Name)) {
+      strcpy(Ini->Keys[i].Data, Key.Data);
+      return;
+    }
+  // If we get this far, then the key does not exist. Add it to the last entry.
+  Ini->Keys[EK_MAX_KEYS - 1] = Key;
+  // TODO: Sort?
 }
-#endif
-
-#endif

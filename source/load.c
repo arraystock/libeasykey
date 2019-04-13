@@ -1,4 +1,4 @@
-// extras.c
+// load.c
 
 /*
 MIT License
@@ -24,27 +24,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "easykey.h"
 
-/*
-Returns the size of a file.
-*/
-long fsize(FILE *File) {
-  long Pos = ftell(File);
-  fseek(File, 0, SEEK_END);
-  long Size = ftell(File);
-  fseek(File, Pos, SEEK_SET);
-  return Size;
-}
+#define Count Ini->Count
+#define Key Ini->Keys[Count]
 
-/*
-Opens a file for reading and writing, or creates it if it does not exist.
-*/
-FILE *rwopen(const char *Filename) {
-  if (access(Filename, F_OK) != -1)
-    return fopen(Filename, "r+");
-  else
-    return fopen(Filename, "w+");
+void iniLoad(const char *Filename, ek_ini *Ini) {
+  FILE *File = fopen(Filename, "r+");
+  if (File != NULL) {
+    char Section[32] = "default";
+    char *Line = NULL;
+    size_t Len;
+    for (Count = 0; getline(&Line, &Len, File) != -1 && Count < EK_MAX_KEYS;) {
+      // Strip trailing newline/whitespaces.
+      while (Line[strlen(Line) - 1] == '\n' || Line[strlen(Line) - 1] == '\r' ||
+             Line[strlen(Line) - 1] == ' ')
+        Line[strlen(Line) - 1] = '\0';
+      // If section... else if key...
+      if (Line[0] == '[' && strchr(Line, ']') != NULL) {
+        // Set the current section.
+        Line = strtok(&Line[1], "]");
+        strncpy(Section, Line, strlen(Line));
+      } else if (strchr(Line, '=') != NULL) {
+        // Copy in the key.
+        strcpy(Key.Section, Section);
+        strcpy(Key.Data, &Line[strcspn(Line, "=") + 1]);
+        strcpy(Key.Name, strtok(Line, "="));
+        Count++;
+      }
+    }
+    fclose(File);
+  }
 }

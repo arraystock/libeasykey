@@ -1,4 +1,4 @@
-// readKey.c
+// main.c
 
 /*
 MIT License
@@ -24,38 +24,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include <easykey.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <unistd.h>
+#define IniFile "../example.ini"
 
-#include "easykey.h"
-#include "easykey/extras.h"
+ek_key Key = {"section1", "FRUITS", ""};
 
-/*
-This function reads the value of a key into a buffer. It also trims off trailing
-newlines and spaces.
-*/
-void readKey(const char *Filename, ek_key Key) {
-  long int Pos = findKey(Filename, Key);
+int main() {
+  // Load the ini file to memory.
+  ek_ini Ini;
+  iniLoad(IniFile, &Ini);
 
-  // If the key exists, then we continue.
-  if (Pos >= 0) {
-    FILE *File = rwopen(Filename);
+  // Get the key.
+  iniGetKey(Ini, &Key);
 
-    // Read in the line, then close the file.
-    fseek(File, Pos, SEEK_SET);
-    size_t Len;
-    getline(&Key.Data, &Len, File);
-    fclose(File);
+  printf("Key '%s' contains: '%s'...\n", Key.Name, Key.Data);
 
-    // Move past key name.
-    strcpy(Key.Data, Key.Data + strlen(Key.Name) + 1);
+  // Set the key.
+  strcpy(Key.Data, "Pears Oranges");
+  iniSetKey(&Ini, Key);
 
-    // Strip trailing newline/whitespaces.
-    while (Key.Data[strlen(Key.Data) - 1] == '\r' ||
-           Key.Data[strlen(Key.Data) - 1] == '\n' ||
-           Key.Data[strlen(Key.Data) - 1] == ' ')
-      Key.Data[strlen(Key.Data) - 1] = '\0';
-  }
+  iniGetKey(Ini, &Key);
+  printf("And now key '%s' contains: '%s'.\n", Key.Name, Key.Data);
+
+  iniFlush(IniFile, Ini);
+
+  return 0;
 }

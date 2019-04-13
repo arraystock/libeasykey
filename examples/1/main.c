@@ -1,4 +1,4 @@
-// extras.h
+// main.c
 
 /*
 MIT License
@@ -24,21 +24,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include <easykey.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-#ifndef EASYKEY_EXTRAS_H
-#define EASYKEY_EXTRAS_H
+#define IniFile "../example.ini"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+ek_key Key = {"section2", "NAME", ""};
 
-long fsize(FILE *File);
+int main() {
+  // Load the ini file to memory.
+  ek_ini Ini;
+  iniLoad(IniFile, &Ini);
 
-FILE *rwopen(const char *Filename);
+  // Get the key.
+  iniGetKey(Ini, &Key);
 
-#ifdef __cplusplus
+  // Print the contents of the key.
+  printf("Key '%s' contains: '%s'\n", Key.Name, Key.Data);
+
+  return 0;
 }
-#endif
-
-#endif

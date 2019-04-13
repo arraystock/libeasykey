@@ -1,4 +1,4 @@
-// easykey.h
+// get.c
 
 /*
 MIT License
@@ -24,28 +24,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <stdbool.h>
-#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "easykey/types.h"
+#include "easykey.h"
 
-#ifndef EASYKEY_H
-#define EASYKEY_H
-
-#define EK_VER "v0.02"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void iniLoad(const char *Filename, ek_ini *Ini);
-void iniFlush(const char *Filename, ek_ini Ini);
-
-char *iniGetKey(const ek_ini Ini, ek_key *Key);
-void iniSetKey(ek_ini *Ini, const ek_key Key);
-
-#ifdef __cplusplus
+/*
+Retrieves a key's value.
+*/
+char *iniGetKey(const ek_ini Ini, ek_key *Key) {
+  for (int i = 0; i < EK_MAX_KEYS; i++)
+    if (!strcmp(Ini.Keys[i].Section, Key->Section) &&
+        !strcmp(Ini.Keys[i].Name, Key->Name)) {
+      memcpy(Key->Data, Ini.Keys[i].Data, strlen(Ini.Keys[i].Data));
+      break;
+    }
+  return Key->Data;
 }
-#endif
-
-#endif

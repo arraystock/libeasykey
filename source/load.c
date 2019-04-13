@@ -35,6 +35,14 @@ SOFTWARE.
 #include "easykey/types.h"
 
 void iniLoad(const char *Filename, ek_ini *Ini) {
+
+  // Clear out structure.
+  for (int i = 0; i <= EK_MAX_KEYS; i++) {
+    Ini->Keys[i].Section = NULL;
+    Ini->Keys[i].Name = NULL;
+    Ini->Keys[i].Data = NULL;
+  }
+
   FILE *File = rwopen(Filename);
   if (File != NULL) {
     char *Section = NULL;

@@ -27,17 +27,13 @@ SOFTWARE.
 #include <stdlib.h>
 #include <string.h>
 
-#include <unistd.h>
-
 #include "easykey.h"
-#include "easykey/extras.h"
 
 /*
-This function reads the value of a key into a buffer. It also trims off trailing
-newlines and spaces.
+Retrieves a key's value.
 */
 char *iniGetKey(const ek_ini Ini, ek_key *Key) {
-  for (int i = 0; i <= EK_MAX_KEYS; i++)
+  for (int i = 0; i <= EK_MAX_KEYS && Ini.Keys[i].Data != NULL; i++)
     if (!strcmp(Ini.Keys[i].Section, Key->Section) &&
         !strcmp(Ini.Keys[i].Name, Key->Name)) {
       Key->Data = realloc(Key->Data, strlen(Ini.Keys[i].Data));

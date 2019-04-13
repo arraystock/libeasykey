@@ -48,5 +48,4 @@ void iniSetKey(ek_ini *Ini, const ek_key Key) {
   // loop left off.
   Ini->Keys[i] = Key;
   // TODO: Sort?
-  // TODO: Flush to file
 }

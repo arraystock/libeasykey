@@ -35,15 +35,13 @@ SOFTWARE.
 #include "easykey/types.h"
 
 void iniLoad(const char *Filename, ek_ini *Ini) {
-
   // Clear out structure.
   for (int i = 0; i <= EK_MAX_KEYS; i++) {
     Ini->Keys[i].Section = NULL;
     Ini->Keys[i].Name = NULL;
     Ini->Keys[i].Data = NULL;
   }
-
-  FILE *File = rwopen(Filename);
+  FILE *File = fopen(Filename, "r+");
   if (File != NULL) {
     char *Section = NULL;
     char *Line = NULL;
@@ -54,13 +52,13 @@ void iniLoad(const char *Filename, ek_ini *Ini) {
              Line[strlen(Line) - 1] == ' ')
         Line[strlen(Line) - 1] = '\0';
 
-      if (isSection(Line)) {
+      if (Line[0] == '[' && strchr(Line, ']') != NULL) {
         Line = strtok(&Line[1], "]");
         Section = realloc(Section, strlen(Line));
         strcpy(Section, Line);
       }
 
-      else if (isKey(Line)) {
+      else if (strchr(Line, '=') != NULL) {
         Ini->Keys[i].Section = malloc(strlen(Section));
         strcpy(Ini->Keys[i].Section, Section);
 

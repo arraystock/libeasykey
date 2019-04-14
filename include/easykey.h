@@ -32,7 +32,7 @@ SOFTWARE.
 #ifndef EASYKEY_H
 #define EASYKEY_H
 
-#define EK_VER "v0.02"
+#define EK_VER "v0.03"
 
 #ifdef __cplusplus
 extern "C" {

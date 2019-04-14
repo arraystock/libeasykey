@@ -29,6 +29,9 @@ SOFTWARE.
 
 #include "easykey.h"
 
+/*
+Flushes the contents of 'ek_ini Ini' back to disk.
+*/
 void iniFlush(const char *Filename, ek_ini Ini) {
   FILE *File = fopen(Filename, "w+");
   if (File != NULL) {

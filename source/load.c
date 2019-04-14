@@ -31,6 +31,9 @@ SOFTWARE.
 
 #define Key Ini->Keys[Ini->Count]
 
+/*
+Loads data from an ini file into 'ek_ini *Ini'.
+*/
 void iniLoad(const char *Filename, ek_ini *Ini) {
   Ini->Count = 0;
   FILE *File = fopen(Filename, "r+");

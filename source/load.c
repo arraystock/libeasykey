@@ -29,16 +29,16 @@ SOFTWARE.
 
 #include "easykey.h"
 
-#define Count Ini->Count
-#define Key Ini->Keys[Count]
+#define Key Ini->Keys[Ini->Count]
 
 void iniLoad(const char *Filename, ek_ini *Ini) {
+  Ini->Count = 0;
   FILE *File = fopen(Filename, "r+");
   if (File != NULL) {
     char Section[32] = "default";
     char *Line = NULL;
     size_t Len;
-    for (Count = 0; getline(&Line, &Len, File) != -1 && Count < EK_MAX_KEYS;) {
+    for (; getline(&Line, &Len, File) != -1 && Ini->Count < EK_MAX_KEYS;) {
       // Strip trailing newline/whitespaces.
       while (Line[strlen(Line) - 1] == '\n' || Line[strlen(Line) - 1] == '\r' ||
              Line[strlen(Line) - 1] == ' ')
@@ -47,13 +47,13 @@ void iniLoad(const char *Filename, ek_ini *Ini) {
       if (Line[0] == '[' && strchr(Line, ']') != NULL) {
         // Set the current section.
         Line = strtok(&Line[1], "]");
-        strncpy(Section, Line, strlen(Line));
+        strcpy(Section, Line);
       } else if (strchr(Line, '=') != NULL) {
         // Copy in the key.
         strcpy(Key.Section, Section);
         strcpy(Key.Data, &Line[strcspn(Line, "=") + 1]);
         strcpy(Key.Name, strtok(Line, "="));
-        Count++;
+        Ini->Count++;
       }
     }
     fclose(File);

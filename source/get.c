@@ -33,10 +33,10 @@ SOFTWARE.
 Retrieves a key's value.
 */
 char *iniGetKey(const ek_ini Ini, ek_key *Key) {
-  for (int i = 0; i < EK_MAX_KEYS; i++)
+  for (int i = 0; i < Ini.Count; i++)
     if (!strcmp(Ini.Keys[i].Section, Key->Section) &&
         !strcmp(Ini.Keys[i].Name, Key->Name)) {
-      memcpy(Key->Data, Ini.Keys[i].Data, strlen(Ini.Keys[i].Data));
+      strcpy(Key->Data, Ini.Keys[i].Data);
       break;
     }
   return Key->Data;

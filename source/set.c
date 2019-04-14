@@ -35,7 +35,7 @@ the data may be out of sort. Doesn't really matter to the program, but the ini
 file will become segmented.
 */
 void iniSetKey(ek_ini *Ini, const ek_key Key) {
-  for (int i = 0; i < EK_MAX_KEYS; i++)
+  for (int i = 0; i < Ini->Count; i++)
     // Get to the key.
     if (!strcmp(Ini->Keys[i].Section, Key.Section) &&
         !strcmp(Ini->Keys[i].Name, Key.Name)) {
@@ -43,6 +43,6 @@ void iniSetKey(ek_ini *Ini, const ek_key Key) {
       return;
     }
   // If we get this far, then the key does not exist. Add it to the last entry.
-  Ini->Keys[EK_MAX_KEYS - 1] = Key;
+  Ini->Keys[Ini->Count++] = Key;
   // TODO: Sort?
 }

@@ -42,6 +42,10 @@ void iniLoad(const char *Filename, ek_ini *Ini) {
     char *Line = NULL;
     size_t Len;
     for (; getline(&Line, &Len, File) != -1 && Ini->Count < EK_MAX_KEYS;) {
+      // Cut off any existing comment.
+      char *Str = strchr(Line, ';');
+      if (Str != NULL)
+        Line[Str - Line] = '\0';
       // Strip trailing newline/whitespaces.
       while (Line[strlen(Line) - 1] == '\n' || Line[strlen(Line) - 1] == '\r' ||
              Line[strlen(Line) - 1] == ' ')

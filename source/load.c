@@ -53,8 +53,7 @@ void iniLoad(const char *Filename, ek_ini *Ini) {
       // If section... else if key...
       if (Line[0] == '[' && strchr(Line, ']') != NULL) {
         // Set the current section.
-        Line = strtok(&Line[1], "]");
-        strcpy(Section, Line);
+        strcpy(Section, strtok(&Line[1], "]"));
       } else if (strchr(Line, '=') != NULL) {
         // Copy in the key.
         strcpy(Key.Section, Section);

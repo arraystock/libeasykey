@@ -38,11 +38,11 @@ SOFTWARE.
 extern "C" {
 #endif
 
-void iniLoad(const char *Filename, ek_ini *Ini);
-void iniFlush(const char *Filename, ek_ini Ini);
+int iniLoad(const char *Filename, ek_key *Keys);
+void iniFlush(const char *Filename, ek_key *Keys, int Count);
 
-char *iniGetKey(const ek_ini Ini, ek_key *Key);
-void iniSetKey(ek_ini *Ini, const ek_key Key);
+char *iniGetKey(const ek_key *Keys, int Count, ek_key *Key);
+void iniSetKey(ek_key *Keys, int *Count, const ek_key Key);
 
 #ifdef __cplusplus
 }

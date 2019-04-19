@@ -34,11 +34,11 @@ ek_key Key = {"section2", "NAME", ""};
 
 int main() {
   // Load the ini file to memory.
-  ek_ini Ini;
-  iniLoad(IniFile, &Ini);
+  ek_key Ini[64]; // 64 being the most keys to read in.
+  int Count = iniLoad(IniFile, Ini);
 
   // Get the key.
-  iniGetKey(Ini, &Key);
+  iniGetKey(Ini, Count, &Key);
 
   // Print the contents of the key.
   printf("Key '%s' contains: '%s'\n", Key.Name, Key.Data);

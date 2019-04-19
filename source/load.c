@@ -29,19 +29,20 @@ SOFTWARE.
 
 #include "easykey.h"
 
-#define Key Ini->Keys[Ini->Count]
+#define Key Keys[Count]
 
 /*
-Loads data from an ini file into 'ek_ini *Ini'.
+Loads data from an ini file into an array of keys *Keys'. Return value is the
+number of keys read and allocated for.
 */
-void iniLoad(const char *Filename, ek_ini *Ini) {
-  Ini->Count = 0;
+int iniLoad(const char *Filename, ek_key *Keys) {
+  int Count = 0;
   FILE *File = fopen(Filename, "r+");
   if (File != NULL) {
     char Section[EK_BUFF_LEN] = "default";
     char *Line = NULL;
     size_t Len;
-    for (; getline(&Line, &Len, File) != -1 && Ini->Count < EK_MAX_KEYS;) {
+    for (; getline(&Line, &Len, File) != -1;) {
       // Cut off any existing comment.
       char *Str = strchr(Line, ';');
       if (Str != NULL)
@@ -56,12 +57,13 @@ void iniLoad(const char *Filename, ek_ini *Ini) {
         strcpy(Section, strtok(&Line[1], "]"));
       } else if (strchr(Line, '=') != NULL) {
         // Copy in the key.
-        strcpy(Key.Section, Section);
-        strcpy(Key.Data, strchr(Line, '=') + 1);
-        strcpy(Key.Name, strtok(Line, "="));
-        Ini->Count++;
+        Key.Section = strdup(Section);
+        Key.Data = strdup(strchr(Line, '=') + 1);
+        Key.Name = strdup(strtok(Line, "="));
+        Count++;
       }
     }
     fclose(File);
   }
+  return Count;
 }

@@ -37,15 +37,10 @@ extern "C" {
 enum { EK_KEY_NO_EXIST = -1, EK_SECTION_NO_EXIST = -2 };
 
 typedef struct ek_key {
-  char Section[EK_BUFF_LEN];
-  char Name[EK_BUFF_LEN];
-  char Data[EK_BUFF_LEN];
+  char *Section;
+  char *Name;
+  char *Data;
 } ek_key;
-
-typedef struct ek_ini {
-  ek_key Keys[EK_MAX_KEYS];
-  int Count;
-} ek_ini;
 
 #ifdef __cplusplus
 }

@@ -31,26 +31,28 @@ SOFTWARE.
 
 #define IniFile "../example.ini"
 
-ek_key Key = {"section1", "FRUITS", ""};
+ek_key Key = {"section1", "FRUITS", NULL};
 
 int main() {
   // Load the ini file to memory.
-  ek_ini Ini;
-  iniLoad(IniFile, &Ini);
+  ek_key Ini[63];
+  int Count = iniLoad(IniFile, Ini);
 
   // Get the key.
-  iniGetKey(Ini, &Key);
+  iniGetKey(Ini, Count, &Key);
 
   printf("Key '%s' contains: '%s'...\n", Key.Name, Key.Data);
 
   // Set the key.
-  strcpy(Key.Data, "Pears Oranges");
-  iniSetKey(&Ini, Key);
+  free(Key.Data);
+  Key.Data = strdup("Pears Oranges");
 
-  iniGetKey(Ini, &Key);
+  iniSetKey(Ini, &Count, Key);
+
+  iniGetKey(Ini, Count, &Key);
   printf("And now key '%s' contains: '%s'.\n", Key.Name, Key.Data);
 
-  iniFlush(IniFile, Ini);
+  iniFlush(IniFile, Ini, Count);
 
   return 0;
 }

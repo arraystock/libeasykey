@@ -38,7 +38,7 @@ void iniLoad(const char *Filename, ek_ini *Ini) {
   Ini->Count = 0;
   FILE *File = fopen(Filename, "r+");
   if (File != NULL) {
-    char Section[32] = "default";
+    char Section[EK_BUFF_LEN] = "default";
     char *Line = NULL;
     size_t Len;
     for (; getline(&Line, &Len, File) != -1 && Ini->Count < EK_MAX_KEYS;) {

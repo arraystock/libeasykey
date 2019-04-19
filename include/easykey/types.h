@@ -32,13 +32,14 @@ extern "C" {
 #endif
 
 #define EK_MAX_KEYS 64
+#define EK_BUFF_LEN 128
 
 enum { EK_KEY_NO_EXIST = -1, EK_SECTION_NO_EXIST = -2 };
 
 typedef struct ek_key {
-  char Section[32];
-  char Name[32];
-  char Data[64];
+  char Section[EK_BUFF_LEN];
+  char Name[EK_BUFF_LEN];
+  char Data[EK_BUFF_LEN];
 } ek_key;
 
 typedef struct ek_ini {

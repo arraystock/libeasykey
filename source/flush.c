@@ -35,7 +35,7 @@ Flushes the contents of 'ek_ini Ini' back to disk.
 void iniFlush(const char *Filename, ek_ini Ini) {
   FILE *File = fopen(Filename, "w+");
   if (File != NULL) {
-    char Section[32] = "default";
+    char Section[EK_BUFF_LEN] = "default";
     for (int i = 0; i < Ini.Count; i++) {
       if (strcmp(Ini.Keys[i].Section, Section)) {
         strcpy(Section, Ini.Keys[i].Section);

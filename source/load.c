@@ -57,7 +57,7 @@ void iniLoad(const char *Filename, ek_ini *Ini) {
       } else if (strchr(Line, '=') != NULL) {
         // Copy in the key.
         strcpy(Key.Section, Section);
-        strcpy(Key.Data, strchr(Line, '='));
+        strcpy(Key.Data, strchr(Line, '=') + 1);
         strcpy(Key.Name, strtok(Line, "="));
         Ini->Count++;
       }

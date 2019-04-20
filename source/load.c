@@ -37,7 +37,7 @@ int iniLoad(const char *Filename, ek_key *Keys) {
   int Count = 0;
   FILE *File = fopen(Filename, "r+");
   if (File != NULL) {
-    char Section[EK_BUFF_LEN] = "default";
+    char *Section = strdup("default");
     char *Line = NULL;
     size_t Len;
     for (; getline(&Line, &Len, File) != -1;) {
@@ -52,7 +52,8 @@ int iniLoad(const char *Filename, ek_key *Keys) {
       // If section... else if key...
       if (Line[0] == '[' && strchr(Line, ']') != NULL) {
         // Set the current section.
-        strcpy(Section, strtok(&Line[1], "]"));
+        free(Section);
+        Section = strdup(strtok(&Line[1], "]"));
       } else if (strchr(Line, '=') != NULL) {
         // Copy in the key.
         Keys[Count].Section = strdup(Section);
@@ -62,6 +63,7 @@ int iniLoad(const char *Filename, ek_key *Keys) {
       }
     }
     free(Line);
+    free(Section);
     fclose(File);
   }
   return Count;

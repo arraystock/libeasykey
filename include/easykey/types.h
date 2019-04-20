@@ -31,11 +31,6 @@ SOFTWARE.
 extern "C" {
 #endif
 
-#define EK_MAX_KEYS 64
-#define EK_BUFF_LEN 128
-
-enum { EK_KEY_NO_EXIST = -1, EK_SECTION_NO_EXIST = -2 };
-
 typedef struct ek_key {
   char *Section;
   char *Name;

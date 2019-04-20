@@ -34,15 +34,19 @@ Sets a key's value. Note that if the key to be set does not already exist, then
 the data may be out of sort. Doesn't really matter to the program, but the ini
 file will become segmented.
 */
-void iniSetKey(ek_ini *Ini, const ek_key Key) {
-  for (int i = 0; i < Ini->Count; i++)
+void iniSetKey(ek_key *Keys, int *Count, const ek_key Key) {
+  for (int i = 0; i < *Count; i++)
     // Get to the key.
-    if (!strcmp(Ini->Keys[i].Section, Key.Section) &&
-        !strcmp(Ini->Keys[i].Name, Key.Name)) {
-      strcpy(Ini->Keys[i].Data, Key.Data);
+    if (!strcmp(Keys[i].Section, Key.Section) &&
+        !strcmp(Keys[i].Name, Key.Name)) {
+      strcpy(Keys[i].Data, Key.Data);
       return;
     }
   // If we get this far, then the key does not exist. Add it to the last entry.
-  Ini->Keys[Ini->Count++] = Key;
+  // NOTE: This assumes there is space in the 'Keys' array for the new key.
+  Keys[*Count].Section = strdup(Key.Section);
+  Keys[*Count].Name = strdup(Key.Name);
+  Keys[*Count].Data = strdup(Key.Data);
+  (*Count)++;
   // TODO: Sort?
 }

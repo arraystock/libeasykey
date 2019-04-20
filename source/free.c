@@ -1,4 +1,4 @@
-// main.c
+// free.c
 
 /*
 MIT License
@@ -24,27 +24,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <easykey.h>
-#include <stdio.h>
 #include <stdlib.h>
 
-#define IniFile "../example.ini"
+#include "easykey.h"
 
-ek_key Key = {"section2", "NAME", NULL};
-
-int main() {
-  // Load the ini file to memory.
-  ek_key Ini[64]; // 64 being the most keys to read in.
-  int Count = iniLoad(IniFile, Ini);
-
-  // Get the key.
-  iniGetKey(Ini, Count, &Key);
-
-  // Print the contents of the key.
-  printf("Key '%s' contains: '%s'\n", Key.Name, Key.Data);
-
-  // Free up our memory to avoid any leaks.
-  iniFree(Ini, Count);
-
-  return 0;
+void iniFree(ek_key *Keys, int Count) {
+  // Free up data.
+  for (int i = 0; i < Count; i++) {
+    free(Keys[i].Section);
+    free(Keys[i].Name);
+    free(Keys[i].Data);
+  }
 }

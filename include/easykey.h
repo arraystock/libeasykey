@@ -40,6 +40,7 @@ extern "C" {
 
 int iniLoad(const char *Filename, ek_key *Keys);
 void iniFlush(const char *Filename, ek_key *Keys, int Count);
+void iniFree(ek_key *Keys, int Count);
 
 char *iniGetKey(const ek_key *Keys, int Count, ek_key *Key);
 void iniSetKey(ek_key *Keys, int *Count, const ek_key Key);

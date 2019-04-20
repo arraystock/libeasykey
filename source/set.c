@@ -44,6 +44,9 @@ void iniSetKey(ek_key *Keys, int *Count, const ek_key Key) {
     }
   // If we get this far, then the key does not exist. Add it to the last entry.
   // NOTE: This assumes there is space in the 'Keys' array for the new key.
-  Keys[(*Count)++] = Key;
+  Keys[*Count].Section = strdup(Key.Section);
+  Keys[*Count].Name = strdup(Key.Name);
+  Keys[*Count].Data = strdup(Key.Data);
+  (*Count)++;
   // TODO: Sort?
 }

@@ -36,7 +36,7 @@ char *iniGetKey(const ek_key *Keys, int Count, ek_key *Key) {
   for (int i = 0; i < Count; i++)
     if (!strcmp(Keys[i].Section, Key->Section) &&
         !strcmp(Keys[i].Name, Key->Name)) {
-      Key->Data = strdup(Keys[i].Data);
+      Key->Data = Keys[i].Data;
       break;
     }
   return Key->Data;

@@ -32,10 +32,11 @@ SOFTWARE.
 #define IniFile "../example.ini"
 
 ek_key Key = {"section1", "FRUITS", NULL};
+char *Value = "Pears Oranges";
 
 int main() {
   // Load the ini file to memory.
-  ek_key Ini[63];
+  ek_key Ini[64];
   int Count = iniLoad(IniFile, Ini);
 
   // Get the key.
@@ -44,8 +45,7 @@ int main() {
   printf("Key '%s' contains: '%s'...\n", Key.Name, Key.Data);
 
   // Set the key.
-  free(Key.Data);
-  Key.Data = strdup("Pears Oranges");
+  Key.Data = Value;
 
   iniSetKey(Ini, &Count, Key);
 
@@ -53,6 +53,9 @@ int main() {
   printf("And now key '%s' contains: '%s'.\n", Key.Name, Key.Data);
 
   iniFlush(IniFile, Ini, Count);
+
+  // Free up our memory to avoid any leaks.
+  iniFree(Ini, Count);
 
   return 0;
 }

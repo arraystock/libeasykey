@@ -29,6 +29,13 @@ SOFTWARE.
 
 #include "easykey.h"
 
+char* trimLeft(char* s) {
+    while(isspace(*s)) {
+        s++;
+    }
+    return s;
+}
+
 /*
 Loads data from an ini file into an array of keys *Keys'. Return value is the
 number of keys read and allocated for.
@@ -57,8 +64,14 @@ int iniLoad(const char *Filename, ek_key *Keys) {
       } else if (strchr(Line, '=') != NULL) {
         // Copy in the key.
         Keys[Count].Section = strdup(Section);
-        Keys[Count].Data = strdup(strchr(Line, '=') + 1);
-        Keys[Count].Name = strdup(strtok(Line, "="));
+        Keys[Count].Data = strdup(trimLeft(strchr(Line, '=') + 1));
+        Keys[Count].Name = strdup(strtok(strtok(Line, "="), " "));
+        Count++;
+      } else if (strchr(Line, ':') != NULL) {
+        // Copy in the key.
+        Keys[Count].Section = strdup(Section);
+        Keys[Count].Data = strdup(trimLeft(strchr(Line, ':') + 1));
+        Keys[Count].Name = strdup(strtok(strtok(Line, ":"), " "));
         Count++;
       }
     }

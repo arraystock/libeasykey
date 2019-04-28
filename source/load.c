@@ -24,16 +24,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "easykey.h"
 
-char* trimLeft(char* s) {
-    while(isspace(*s)) {
-        s++;
-    }
-    return s;
+char *trimLeft(char *Str) {
+  while (isspace(*Str))
+    Str++;
+  return Str;
 }
 
 /*
@@ -49,7 +49,11 @@ int iniLoad(const char *Filename, ek_key *Keys) {
     size_t Len;
     for (; getline(&Line, &Len, File) != -1;) {
       // Cut off any existing comment.
-      char *Str = strchr(Line, ';');
+      char *Str;
+      Str = strchr(Line, ';');
+      if (Str != NULL)
+        Line[Str - Line] = '\0';
+      Str = strstr(Line, "//");
       if (Str != NULL)
         Line[Str - Line] = '\0';
       // Strip trailing newline/whitespaces.

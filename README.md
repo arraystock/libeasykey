@@ -6,6 +6,9 @@ A simple library for reading and writing data.
 
 Although this is more of a sandbox to help me improve my programming skills and knowledge, feel free to actually use this in something.
 
+## Installing
+To install `libeasykey` under macOS or linux or really any *nix system, just run `sudo make install`. Similarly, you can uninstall the library with `sudo make uninstall`.
+
 ## Documentation
 All official documentation is in the [wiki](https://github.com/arraystock/libeasykey/wiki).
 

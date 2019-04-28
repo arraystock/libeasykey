@@ -23,7 +23,7 @@ $(TARGET_DIR)/$(TARGET): $(OBJS)
 	$(AR) -rcs $(TARGET_DIR)/$(TARGET) $(OBJS)
 
 $(PACKAGE): all
-	zip -r $(PACKAGE) ./
+	zip -r $(PACKAGE) include/ lib/ LICENSE Makefile README.md
 
 all: $(TARGET_DIR)/$(TARGET)
 

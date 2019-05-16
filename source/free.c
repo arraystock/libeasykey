@@ -30,7 +30,8 @@ SOFTWARE.
 
 void iniFree(ek_key *Keys, int Count) {
   // Free up data.
-  for (int i = 0; i < Count; i++) {
+  int i;
+  for (i = 0; i < Count; i++) {
     free(Keys[i].Section);
     free(Keys[i].Name);
     free(Keys[i].Data);

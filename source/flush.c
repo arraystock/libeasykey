@@ -36,7 +36,8 @@ void iniFlush(const char *Filename, ek_key *Keys, int Count) {
   FILE *File = fopen(Filename, "w+");
   if (File != NULL) {
     char *Section = strdup("default");
-    for (int i = 0; i < Count; i++) {
+    int i;
+    for (i = 0; i < Count; i++) {
       if (strcmp(Keys[i].Section, Section)) {
         free(Section);
         Section = strdup(Keys[i].Section);

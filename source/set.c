@@ -35,7 +35,8 @@ the data may be out of sort. Doesn't really matter to the program, but the ini
 file will become segmented.
 */
 void iniSetKey(ek_key *Keys, int *Count, const ek_key Key) {
-  for (int i = 0; i < *Count; i++)
+  int i;
+  for (i = 0; i < *Count; i++)
     // Get to the key.
     if (!strcmp(Keys[i].Section, Key.Section) &&
         !strcmp(Keys[i].Name, Key.Name)) {

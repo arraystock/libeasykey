@@ -6,29 +6,15 @@ os:
 
 env:
   global:
-    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-    #   via the "travis encrypt" command using the project repo's public key
+    # Coverity scan token.
     secure: "pwd5rLgEvnJWdwoXcRQJHeWmQ++M3vkEW9Q9/zR8bZXVTyv0FXLU8s19KASlqa5Q2z/wSNDEQpXzXBgDvAQXJBt0TTxYBs1dxecLTEFdTgHHDaHKFFpcmoCzPNL7n5CW3VDOVDpr5+OSBLaE3YPEqtZiRhFrcVA2uGaf2cGjWI/YqYjQzIokcBOVaVPU4AGDzsCOSSk782sePuFGfPbn6JrEfn3H8syI2hbhbx81z5yIp6Cewb9iqrcIG2U3s7NrCpj0NcwctNyEPWUAogfLTEVoryGXOV479GInSLxXqTZPf46n992d8ZAzBgEQV3RCvWCTx4H7a/aj/G+FTpdXr+m7V0B6jGUr73GJ9ldj5VhB8ryTrpJm793AIAFDh+qLAWuw6l2urVxkj4lxdcNlov7Bcaq6Ebbb+ZvKuvkBUBy569ptW4DMQzCp6SFKqEn1wfKHpTOBBBtmvy34bNEALEKmKS1BJ6JQ6KV0mWbJeCe7vWWSCq2fkeXNd0lLwrFWKcbKfq/Dnv0YSUK2ZesUCuMjf09txzGhzELAa7EHBErjW5ewbG6Mb/YDGOyHji6gQS9V9HNeavSRKf7XGPuQMfOp544Y8XTdZcuXtb60zVVnQNeA0eP2qxtH349VZeyfHRzzAZaLEoMeJWStf+e8kuHW4MRFv6AkKtfZoymGqsM="
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca- ; fi
 
 script:
-  - make package PACKAGE=libeasykey-$TRAVIS_OS_NAME.zip
-
-after_success:
-  - git config --global user.email "travis@travis-ci.org"
-  - git config --global user.name "Travis CI"
-  - export COMMIT_TAG="$(git log --format=%h -1)"
-  - export COMMIT_MESSAGE="$(git log --pretty=format:"%an - %s" -1)"
-  - cd ..
-  - git clone https://${GH_TOKEN}@github.com/arraystock/builds.git
-  - mkdir builds/libeasykey/
-  - mv ./libeasykey/*.zip ./builds/libeasykey/
-  - cd ./builds
-  - git add .
-  - git commit -m "libeasykey ($TRAVIS_OS_NAME) | Commit $COMMIT_TAG"
-  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then git push --quiet --set-upstream origin master ; fi
+  - cmake .
+  - make
 
 addons:
   coverity_scan:
@@ -36,6 +22,6 @@ addons:
       name: "arraystock/libeasykey"
       description: "A simplistic library for reading/writing data."
     notification_email: jon@jonnyarcher.com
-    build_command_prepend: "make clean"
-    build_command: "make all"
+    build_command_prepend: "cmake ."
+    build_command: "make"
     branch_pattern: master

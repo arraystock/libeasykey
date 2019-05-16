@@ -9,7 +9,8 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -ggdb")
 # Project name.
 project(easykey)
 
-# Specify our output directory.
+# Specify (and create) our output directory.
+file(MAKE_DIRECTORY "${PROJECT_SOURCE_DIR}/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib")
 
 # Glob all our source files into a variable.
@@ -20,3 +21,7 @@ ADD_LIBRARY(easykey STATIC "${easykey_source}")
 
 # Specify include directories.
 target_include_directories(easykey PRIVATE "${PROJECT_SOURCE_DIR}/include")
+
+# Install rules.
+install(TARGETS easykey ARCHIVE DESTINATION /usr/lib)
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/include" DESTINATION /usr)

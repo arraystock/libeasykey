@@ -11,10 +11,10 @@ env:
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca- ; fi
-
-script:
   - mkdir build
   - cd build
+
+script:
   - cmake .. -DCMAKE_BUILD_TYPE=Release
   - make
 
@@ -26,4 +26,4 @@ addons:
     notification_email: jon@jonnyarcher.com
     build_command_prepend: "cmake ."
     build_command: "make"
-    branch_pattern: master
+    branch_pattern: coverity_scan

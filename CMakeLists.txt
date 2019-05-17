@@ -32,7 +32,7 @@ file(GLOB easykey_source "${PROJECT_SOURCE_DIR}/source/*.c")
 ADD_LIBRARY(easykey STATIC "${easykey_source}")
 
 # Specify include directories.
-target_include_directories(easykey PRIVATE "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(easykey PRIVATE "${CMAKE_BINARY_DIR}/include")
 
 # Install rules.
 install(TARGETS easykey ARCHIVE DESTINATION /usr/lib)

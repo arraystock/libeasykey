@@ -4,10 +4,10 @@ A simple library for reading and writing data.
 ## About
 `libeasykey` is designed to be a simple yet fully-featured library for reading and writing data to and from `ini` files.
 
-Although this is more of a sandbox to help me improve my programming skills and knowledge, feel free to actually use this in something.
+I originally just made this as a fun project, but feel free to actually use this in something :)
 
 ## Installing
-To install `libeasykey` under macOS or linux or really any *nix system, just run `sudo make install`. Similarly, you can uninstall the library with `sudo make uninstall`.
+To build and install `libeasykey` under macOS or linux or really any *nix system from source, first, make a build directory and move to it (`mkdir build && cd build`). Then, run `cmake ..`, and finally, run `sudo make install`.
 
 ## Documentation
 All official documentation is in the [wiki](https://github.com/arraystock/libeasykey/wiki).

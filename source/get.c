@@ -33,7 +33,8 @@ SOFTWARE.
 Retrieves a key's value.
 */
 char *iniGetKey(const ek_key *Keys, int Count, ek_key *Key) {
-  for (int i = 0; i < Count; i++)
+  int i;
+  for (i = 0; i < Count; i++)
     if (!strcmp(Keys[i].Section, Key->Section) &&
         !strcmp(Keys[i].Name, Key->Name)) {
       Key->Data = Keys[i].Data;

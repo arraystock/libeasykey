@@ -27,8 +27,6 @@ SOFTWARE.
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "easykey/types.h"
-
 #ifndef EASYKEY_H
 #define EASYKEY_H
 
@@ -37,6 +35,12 @@ SOFTWARE.
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+typedef struct ek_key {
+  char *Section;
+  char *Name;
+  char *Data;
+} ek_key;
 
 int iniLoad(const char *Filename, ek_key *Keys);
 void iniFlush(const char *Filename, ek_key *Keys, int Count);

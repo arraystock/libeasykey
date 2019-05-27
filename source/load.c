@@ -30,40 +30,16 @@ SOFTWARE.
 
 #include "easykey.h"
 
-int readLine(char **Line, FILE *Stream) {
-  int n = 32;                // Number of bytes to allocate.
-  *Line = realloc(*Line, n); // Initial allocation.
-  char *Cur = *Line;         // Set up a pointer.
+int readLine(char **, FILE *);
 
-  while (1) {
-    // Difference between our pointer and the base.
-    int Diff = Cur - *Line;
-    // Check if we need to allocate more space.
-    if (Diff + 1 >= n) {
-      n += 32;
-      *Line = realloc(*Line, n);
-      Cur = *Line + Diff;
-    }
-    // Read in the next character.
-    char c = getc(Stream);
-
-    if (c == EOF)
-      return -1;
-    if (c == '\n')
-      break;
-
-    // Increment our pointer and assign.
-    *Cur++ = c;
-  }
-  // Add null terminator and return 0.
-  *Cur++ = 0;
-  return 0;
-}
-
-char *trimLeft(char *Str) {
-  while (isspace(*Str))
-    Str++;
-  return Str;
+/*
+Removes leading whitespace from a string. Moves pointer, so be careful when
+using on an allocated string.
+*/
+char *trimLeft(char *s) {
+  while (*s == ' ')
+    s++;
+  return s;
 }
 
 /*

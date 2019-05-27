@@ -30,6 +30,36 @@ SOFTWARE.
 
 #include "easykey.h"
 
+int readLine(char **Line, FILE *Stream) {
+  int n = 32;                // Number of bytes to allocate.
+  *Line = realloc(*Line, n); // Initial allocation.
+  char *Cur = *Line;         // Set up a pointer.
+
+  while (1) {
+    // Difference between our pointer and the base.
+    int Diff = Cur - *Line;
+    // Check if we need to allocate more space.
+    if (Diff + 1 >= n) {
+      n += 32;
+      *Line = realloc(*Line, n);
+      Cur = *Line + Diff;
+    }
+    // Read in the next character.
+    char c = getc(Stream);
+
+    if (c == EOF)
+      return -1;
+    if (c == '\n')
+      break;
+
+    // Increment our pointer and assign.
+    *Cur++ = c;
+  }
+  // Add null terminator and return 0.
+  *Cur++ = 0;
+  return 0;
+}
+
 char *trimLeft(char *Str) {
   while (isspace(*Str))
     Str++;
@@ -46,8 +76,7 @@ int iniLoad(const char *Filename, ek_key *Keys) {
   if (File != NULL) {
     char *Section = strdup("default");
     char *Line = NULL;
-    size_t Len;
-    for (; getline(&Line, &Len, File) != -1;) {
+    while (readLine(&Line, File) != -1) {
       // Cut off any existing comment.
       char *Str;
       Str = strchr(Line, ';');

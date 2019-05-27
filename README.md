@@ -7,7 +7,12 @@ A simple library for reading and writing data.
 I originally just made this as a fun project, but feel free to actually use this in something :)
 
 ## Installing
-To build and install `libeasykey` under macOS or linux or really any *nix system from source, first, make a build directory and move to it (`mkdir build && cd build`). Then, run `cmake ..`, and finally, run `sudo make install`.
+### macOS/Linux/Unix
+First, make a build directory and move to it (`mkdir build && cd build`). Then, run `cmake ..`, and finally, run `sudo make install`.
+### Windows
+NOTE: Under Windows, there is no specified way to install `libeasykey`. The following instructions will only build it, not install it.
+
+First, make a build directory and move to it (`mkdir build && cd build`). Then, run `cmake ..`, and finally, run `msbuild ./easykey.sln`.
 
 ## Documentation
 All official documentation is in the [wiki](https://github.com/arraystock/libeasykey/wiki).

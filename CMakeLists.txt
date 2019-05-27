@@ -35,5 +35,5 @@ ADD_LIBRARY(easykey STATIC "${easykey_source}")
 target_include_directories(easykey PRIVATE "${CMAKE_BINARY_DIR}/include")
 
 # Install rules.
-install(TARGETS easykey ARCHIVE DESTINATION /usr/lib)
-install(DIRECTORY "${CMAKE_BINARY_DIR}/include" DESTINATION /usr)
+install(TARGETS easykey ARCHIVE DESTINATION /usr/local/lib)
+install(DIRECTORY "${CMAKE_BINARY_DIR}/include" DESTINATION /usr/local)

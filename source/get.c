@@ -32,12 +32,12 @@ SOFTWARE.
 /*
 Retrieves a key's value.
 */
-char *iniGetKey(const ek_key *Keys, int Count, ek_key *Key) {
+char *iniGetKey(const ek_ini Ini, ek_key *Key) {
   int i;
-  for (i = 0; i < Count; i++)
-    if (!strcmp(Keys[i].Section, Key->Section) &&
-        !strcmp(Keys[i].Name, Key->Name)) {
-      Key->Data = Keys[i].Data;
+  for (i = 0; i < Ini.Count; i++)
+    if (!strcmp(Ini.Keys[i].Section, Key->Section) &&
+        !strcmp(Ini.Keys[i].Name, Key->Name)) {
+      Key->Data = Ini.Keys[i].Data;
       break;
     }
   return Key->Data;

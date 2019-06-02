@@ -46,13 +46,19 @@ char *trimLeft(char *s) {
 Loads data from an ini file into an array of keys *Keys'. Return value is the
 number of keys read and allocated for.
 */
-int iniLoad(const char *Filename, ek_key *Keys) {
-  int Count = 0;
+void iniLoad(const char *Filename, ek_ini *Ini) {
+  int n = 16;
+  Ini->Keys = calloc(n, sizeof(ek_key));
+  Ini->Count = 0;
   FILE *File = fopen(Filename, "r+");
   if (File != NULL) {
     char *Section = strdup("default");
     char *Line = NULL;
     while (readLine(&Line, File) != -1) {
+      if (Ini->Count >= n) {
+        n += 16;
+        Ini->Keys = realloc(Ini->Keys, n * sizeof(ek_key));
+      }
       // Cut off any existing comment.
       char *Str;
       Str = strchr(Line, ';');
@@ -72,21 +78,20 @@ int iniLoad(const char *Filename, ek_key *Keys) {
         Section = strdup(strtok(&Line[1], "]"));
       } else if (strchr(Line, '=') != NULL) {
         // Copy in the key.
-        Keys[Count].Section = strdup(Section);
-        Keys[Count].Data = strdup(trimLeft(strchr(Line, '=') + 1));
-        Keys[Count].Name = strdup(strtok(strtok(Line, "="), " "));
-        Count++;
+        Ini->Keys[Ini->Count].Section = strdup(Section);
+        Ini->Keys[Ini->Count].Data = strdup(trimLeft(strchr(Line, '=') + 1));
+        Ini->Keys[Ini->Count].Name = strdup(strtok(strtok(Line, "="), " "));
+        Ini->Count++;
       } else if (strchr(Line, ':') != NULL) {
         // Copy in the key.
-        Keys[Count].Section = strdup(Section);
-        Keys[Count].Data = strdup(trimLeft(strchr(Line, ':') + 1));
-        Keys[Count].Name = strdup(strtok(strtok(Line, ":"), " "));
-        Count++;
+        Ini->Keys[Ini->Count].Section = strdup(Section);
+        Ini->Keys[Ini->Count].Data = strdup(trimLeft(strchr(Line, ':') + 1));
+        Ini->Keys[Ini->Count].Name = strdup(strtok(strtok(Line, ":"), " "));
+        Ini->Count++;
       }
     }
     free(Line);
     free(Section);
     fclose(File);
   }
-  return Count;
 }

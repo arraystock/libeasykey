@@ -36,26 +36,26 @@ char *Value = "Pears Oranges";
 
 int main() {
   // Load the ini file to memory.
-  ek_key Ini[64];
-  int Count = iniLoad(IniFile, Ini);
+  ek_ini Ini = EK_INI_DEFAULT;
+  iniLoad(IniFile, &Ini);
 
   // Get the key.
-  iniGetKey(Ini, Count, &Key);
+  iniGetKey(Ini, &Key);
 
   printf("Key '%s' contains: '%s'...\n", Key.Name, Key.Data);
 
   // Set the key.
   Key.Data = Value;
 
-  iniSetKey(Ini, &Count, Key);
+  iniSetKey(&Ini, Key);
 
-  iniGetKey(Ini, Count, &Key);
+  iniGetKey(Ini, &Key);
   printf("And now key '%s' contains: '%s'.\n", Key.Name, Key.Data);
 
-  iniFlush(IniFile, Ini, Count);
+  iniFlush(IniFile, Ini);
 
   // Free up our memory to avoid any leaks.
-  iniFree(Ini, Count);
+  iniFree(&Ini);
 
   return 0;
 }

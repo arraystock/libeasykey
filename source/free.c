@@ -28,12 +28,14 @@ SOFTWARE.
 
 #include "easykey.h"
 
-void iniFree(ek_key *Keys, int Count) {
-  // Free up data.
+void iniFree(ek_ini *Ini) {
   int i;
-  for (i = 0; i < Count; i++) {
-    free(Keys[i].Section);
-    free(Keys[i].Name);
-    free(Keys[i].Data);
+  for (i = 0; i < Ini->Count; i++) {
+    free(Ini->Keys[i].Section);
+    free(Ini->Keys[i].Name);
+    free(Ini->Keys[i].Data);
   }
+  free(Ini->Keys);
+  Ini->Count = 0;
+  Ini->Keys = NULL;
 }

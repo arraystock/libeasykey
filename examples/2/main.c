@@ -35,8 +35,9 @@ ek_key Key = {"section1", "FRUITS", NULL};
 char *Value = "Pears Oranges";
 
 int main() {
-  // Load the ini file to memory.
   ek_ini Ini = EK_INI_DEFAULT;
+
+  // Load the ini file to memory.
   iniLoad(IniFile, &Ini);
 
   // Get the key.
@@ -52,6 +53,7 @@ int main() {
   iniGetKey(Ini, &Key);
   printf("And now key '%s' contains: '%s'.\n", Key.Name, Key.Data);
 
+  // Flush the ini data back to disk.
   iniFlush(IniFile, Ini);
 
   // Free up our memory to avoid any leaks.

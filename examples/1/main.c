@@ -33,8 +33,9 @@ SOFTWARE.
 ek_key Key = {"section2", "NAME", NULL};
 
 int main() {
+  ek_ini Ini = EK_INI_DEFAULT;
+  
   // Load the ini file to memory.
-  ek_ini Ini = EK_INI_DEFAULT; // 64 being the most keys to read in.
   iniLoad(IniFile, &Ini);
 
   // Get the key.

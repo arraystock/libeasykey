@@ -6,9 +6,9 @@ TARGET := example.out
 SRCS := main.c
 OBJS := $(filter %.o, $(patsubst %.c, %.o, $(SRCS)))
 
-CPPFLAGS := -Wall -Wextra -O2
+CPPFLAGS := -Wall -Wextra
 
-.PHONY: all clean clang-format
+.PHONY: all clean
 
 $(TARGET): $(OBJS)
 	$(CC) -o $(TARGET) $(OBJS) -leasykey
@@ -16,7 +16,4 @@ $(TARGET): $(OBJS)
 all: $(TARGET)
 
 clean:
-	-@rm -rf $(TARGET) $(PACKAGE) $(OBJS)
-
-clang-format:
-	clang-format -style=llvm -i $(SRCS)
+	-@rm -rf $(TARGET) $(OBJS)

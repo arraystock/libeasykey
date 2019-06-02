@@ -33,18 +33,19 @@ SOFTWARE.
 ek_key Key = {"section2", "NAME", NULL};
 
 int main() {
+  ek_ini Ini = EK_INI_DEFAULT;
+  
   // Load the ini file to memory.
-  ek_key Ini[64]; // 64 being the most keys to read in.
-  int Count = iniLoad(IniFile, Ini);
+  iniLoad(IniFile, &Ini);
 
   // Get the key.
-  iniGetKey(Ini, Count, &Key);
+  iniGetKey(Ini, &Key);
 
   // Print the contents of the key.
   printf("Key '%s' contains: '%s'\n", Key.Name, Key.Data);
 
   // Free up our memory to avoid any leaks.
-  iniFree(Ini, Count);
+  iniFree(&Ini);
 
   return 0;
 }

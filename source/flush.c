@@ -32,18 +32,18 @@ SOFTWARE.
 /*
 Flushes the contents of 'ek_ini Ini' back to disk.
 */
-void iniFlush(const char *Filename, ek_key *Keys, int Count) {
+void iniFlush(const char *Filename, ek_ini Ini) {
   FILE *File = fopen(Filename, "w+");
   if (File != NULL) {
     char *Section = strdup("default");
     int i;
-    for (i = 0; i < Count; i++) {
-      if (strcmp(Keys[i].Section, Section)) {
+    for (i = 0; i < Ini.Count; i++) {
+      if (strcmp(Ini.Keys[i].Section, Section)) {
         free(Section);
-        Section = strdup(Keys[i].Section);
+        Section = strdup(Ini.Keys[i].Section);
         fprintf(File, "[%s]\n", Section);
       }
-      fprintf(File, "%s=%s\n", Keys[i].Name, Keys[i].Data);
+      fprintf(File, "%s=%s\n", Ini.Keys[i].Name, Ini.Keys[i].Data);
     }
     free(Section);
     fclose(File);

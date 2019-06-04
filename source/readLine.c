@@ -45,7 +45,7 @@ int readLine(char **Line, FILE *Stream) {
       Cur = *Line + Diff;
     }
     // Read in the next character.
-    char c = getc(Stream);
+    int c = getc(Stream);
 
     if (c == EOF)
       return -1;

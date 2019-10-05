@@ -1,5 +1,7 @@
-# libeasykey [![Build Status](https://travis-ci.org/arraystock/libeasykey.svg?branch=master)](https://travis-ci.org/arraystock/libeasykey) [![CodeFactor](https://www.codefactor.io/repository/github/arraystock/libeasykey/badge)](https://www.codefactor.io/repository/github/arraystock/libeasykey)
+# libeasykey (Deprecated) [![Build Status](https://travis-ci.org/arraystock/libeasykey.svg?branch=master)](https://travis-ci.org/arraystock/libeasykey) [![CodeFactor](https://www.codefactor.io/repository/github/arraystock/libeasykey/badge)](https://www.codefactor.io/repository/github/arraystock/libeasykey)
 A simple library for reading and writing data.
+
+***NOTE: libeasykey is no longer being updated/maintained. Please use [libeasydata](https://github.com/arraystock/libeasydata) instead.***
 
 ## About
 `libeasykey` is designed to be a simple yet fully-featured library for reading and writing data to and from `ini` files.
